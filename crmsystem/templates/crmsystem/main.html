@@ -1,0 +1,17 @@
+{% extends 'crmsystem/base.html' %}
+
+{% block content %}
+    <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            User
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'logout_form' %}">Log Out</a></li>
+            {% else %}
+                <li><a href="{% url 'login_form' %}">Log In</a></li>
+            {% endif %}
+        </ul>
+      </div>
+{% endblock %}
