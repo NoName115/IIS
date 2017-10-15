@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from .models import *
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group, User
 from django.contrib.auth import authenticate, login, logout
+
+from .models import *
+from .forms import *
 
 
 #@login_required(login_url='accounts/login/')
@@ -37,4 +40,56 @@ def logout_form(request):
     return render(request, 'account/logout.html', {})
 
 def registration_form(request):
-    return render(request, 'account/registration.html', {})
+    state = 'Welcome !!!!'
+    com_owner_group = 'test'
+    cus_ser_group = 'test_2'
+
+    if (request.method == "POST"):
+        form = RegistrationForm(request.POST)
+
+        # Registration form is valid
+        if (form.is_valid()):
+            role = form.cleaned_data.get('roles')
+            if (role == 'com_owner'):
+                group = Group.objects.get(name=com_owner_group)
+
+                # If group is empty, create user
+                if (not group.user_set.all()):
+                    user = User.objects.create_user(
+                        username=form.cleaned_data.get('user_name'),
+                        first_name=form.cleaned_data.get('first_name'),
+                        last_name=form.cleaned_data.get('last_name'),
+                        email=form.cleaned_data.get('email'),
+                        password=form.cleaned_data.get('password2')
+                        )
+                    user.groups.add(group)
+
+                    return redirect('login_form')
+                else:
+                    state = 'Company owner is already registered !!!'
+            elif (role == 'cus_ser'):
+                group = Group.objects.get(name=cus_ser_group)
+
+                # If group is empty, create user
+                if (not group.user_set.all()):
+                    user = User.objects.create_user(
+                        username=form.cleaned_data.get('user_name'),
+                        first_name=form.cleaned_data.get('first_name'),
+                        last_name=form.cleaned_data.get('last_name'),
+                        email=form.cleaned_data.get('email'),
+                        password=form.cleaned_data.get('password2')
+                        )
+                    user.groups.add(group)
+
+                    return redirect('login_form')
+                else:
+                    state = 'Customer service is already registered !!!'
+            else:
+                state = 'Invalid role'
+    else:
+        form = RegistrationForm()
+
+    return render(request, 'account/registration.html', {
+        'form': form,
+        'state': state,
+    })

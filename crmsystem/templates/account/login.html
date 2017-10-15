@@ -4,6 +4,7 @@
     <div class="col-md-4 col-md-offset-4">
         {% if user.is_authenticated %}
             <h3>You already logged in!!!</h3>
+            <a href="{% url 'registration_form' %}">Register new user</a>
         {% else %}
             <h3>{{ state }}</h3>
             <form method="POST">
@@ -15,6 +16,7 @@
                     <input type="text" name="username" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
                     <input type="password" name="password" class="form-control" placeholder="Password" aria-describedby="basic-addon1">
                     <button class="btn btn-default" type="submit">Log In</button>
+                    <a href="{% url 'registration_form' %}">Register new user</a>
                 </div>
             </form>
         {% endif %}
