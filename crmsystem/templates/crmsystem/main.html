@@ -13,5 +13,8 @@
                 <li><a href="{% url 'login_form' %}">Log In</a></li>
             {% endif %}
         </ul>
-      </div>
+    </div>
+    {% if user.is_authenticated %}
+        <a href="{% url 'role_site' %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">My main site</a>
+    {% endif %}
 {% endblock %}

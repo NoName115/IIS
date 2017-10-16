@@ -10,7 +10,32 @@ from .forms import *
 
 #@login_required(login_url='accounts/login/')
 def default_web(request):
+    if (request.method == "POST"):
+        redirect('role_site')
+
     return render(request, 'crmsystem/main.html', {})
+
+def role_site(request):
+    # To bude stranka na vsetky hlavne tlacitka pre User-ov
+    return render(request, 'crmsystem/role_site.html', {})
+
+def contract_site(request):
+    return render(request, 'crmsystem/contract_site.html', {})
+
+def meeting_site(request):
+    return render(request, 'crmsystem/meeting_site.html', {})
+
+def customer_site(request):
+    return render(request, 'crmsystem/customer_site.html', {})
+
+def customer_edit(request, pk):
+    return render(request, 'crmsystem/customer_detail.html', {'pk': pk})
+
+def worker_site(request):
+    return render(request, 'crmsystem/worker_site.html', {})
+
+def worker_edit(request, pk):
+    return render(request, 'crmsystem/worker_detail.html', {'pk': pk})
 
 def login_form(request):
     state = "Please log in below..."
