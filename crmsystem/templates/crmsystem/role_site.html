@@ -19,42 +19,44 @@
     </li>
 </ul>
 
-<div class="container-fluid">
-    <div class="row">
-        <h1>Main role site</h1>
-    </div>
-    
-    <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
-            <a href="{% url 'contract_site' %}" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Contract</a>
-        </div>
-        <div class="col-md-3"></div>
-    </div>
+<div class="top-space-big"></div>
 
-    <div class="row top-buffer">
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
-            <a href="{% url 'meeting_site' %}" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Meeting</a>
-        </div>
-        <div class="col-md-3"></div>
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <a href="{% url 'contract_site' %}" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Contract</a>
     </div>
+    <div class="col-md-3"></div>
+</div>
 
-    <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
-            <a href="{% url 'customer_site' %}" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Customer</a>
-        </div>
-        <div class="col-md-3"></div>
-    </div>
+<div class="top-space-small"></div>
 
-    <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
-            <a href="{% url 'worker_site' %}" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Worker</a>
-        </div>
-        <div class="col-md-3"></div>
+<div class="row top-buffer">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <a href="{% url 'meeting_site' %}" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Meeting</a>
     </div>
+    <div class="col-md-3"></div>
+</div>
+
+<div class="top-space-small"></div>
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <a href="{% url 'customer_site' %}" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Customer</a>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+
+<div class="top-space-small"></div>
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <a href="{% url 'worker_site' %}" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Worker</a>
+    </div>
+    <div class="col-md-3"></div>
 </div>
 
 {% endblock %}
