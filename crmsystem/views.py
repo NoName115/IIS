@@ -15,6 +15,7 @@ def default_web(request):
 
     return render(request, 'crmsystem/main.html', {})
 
+@login_required(login_url='../accounts/login/')
 def role_site(request):
     # To bude stranka na vsetky hlavne tlacitka pre User-ov
     return render(request, 'crmsystem/role_site.html', {})

@@ -1,5 +1,60 @@
 {% extends 'crmsystem/base.html' %}
 
 {% block content %}
-    <h1>Main role site</h1>
+<ul class="nav nav-tabs nav-fill">
+    <li class="nav-item">
+        <a class="nav-link active" href="{% url 'role_site' %}">Home</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if not user.is_authenticated %} disabled {% endif %}" href="{% if user.is_authenticated %} {% url 'contract_site' %} {% endif %}">Contract</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'meeting_site' %}">Meeting</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'customer_site' %}">Customer</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'worker_site' %}">Worker</a>
+    </li>
+</ul>
+
+<div class="container-fluid">
+    <div class="row">
+        <h1>Main role site</h1>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <a href="{% url 'contract_site' %}" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Contract</a>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+
+    <div class="row top-buffer">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <a href="{% url 'meeting_site' %}" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Meeting</a>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <a href="{% url 'customer_site' %}" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Customer</a>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <a href="{% url 'worker_site' %}" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Worker</a>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>
+
 {% endblock %}
