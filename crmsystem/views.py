@@ -23,8 +23,14 @@ def role_site(request):
 def contract_site(request):
     return render(request, 'crmsystem/contract_site.html', {})
 
+def contract_new(request):
+    return render(request, 'crmsystem/contract_new.html', {})
+
 def meeting_site(request):
     return render(request, 'crmsystem/meeting_site.html', {})
+
+def meeting_new(request):
+    return render(request, 'crmsystem/meeting_new.html', {})
 
 def customer_site(request):
     return render(request, 'crmsystem/customer_site.html', {})
@@ -32,8 +38,14 @@ def customer_site(request):
 def customer_edit(request, pk):
     return render(request, 'crmsystem/customer_detail.html', {'pk': pk})
 
+def customer_new(request):
+    return render(request, 'crmsystem/customer_new.html', {})
+
 def worker_site(request):
     return render(request, 'crmsystem/worker_site.html', {})
+
+def worker_new(request):
+    return render(request, 'crmsystem/worker_new.html', {})
 
 def worker_edit(request, pk):
     return render(request, 'crmsystem/worker_detail.html', {'pk': pk})
