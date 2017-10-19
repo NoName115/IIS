@@ -5,7 +5,7 @@ from django.contrib.auth.models import Group, User
 from django.contrib.auth import authenticate, login, logout
 
 from .models import *
-from .forms import *
+from .forms import EmployeeForm, RegistrationForm
 
 
 #@login_required(login_url='accounts/login/')
@@ -41,14 +41,35 @@ def customer_edit(request, pk):
 def customer_new(request):
     return render(request, 'crmsystem/customer_new.html', {})
 
-def worker_site(request):
-    return render(request, 'crmsystem/worker_site.html', {})
+def employee_site(request):
+    employee_list = Employee.objects.all()
+    return render(
+        request,
+        'crmsystem/employee_site.html',
+        {'list': employee_list}
+        )
 
-def worker_new(request):
-    return render(request, 'crmsystem/worker_new.html', {})
+def employee_new(request):
+    state = "Register new employee"
+    if (request.method == "POST"):
+        form = EmployeeForm(request.POST)
+        if (form.is_valid()):
+            employee = form.save(commit=False)
+            employee.save()
+            return redirect('employee_site')
+        else:
+            state = 'Invalid input data'
+    else:
+        form = EmployeeForm()
 
-def worker_edit(request, pk):
-    return render(request, 'crmsystem/worker_detail.html', {'pk': pk})
+    return render(
+        request,
+        'crmsystem/employee_new.html',
+        {'form': form}
+    )
+
+def employee_edit(request, pk):
+    return render(request, 'crmsystem/employee_detail.html', {'pk': pk})
 
 def cloth_site(request):
     return render(request, 'crmsystem/cloth_site.html', {})

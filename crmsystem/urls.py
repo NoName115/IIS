@@ -15,8 +15,8 @@ urlpatterns = [
     url(r'^customer/$', views.customer_site, name='customer_site'),
     url(r'^customer/new/$', views.customer_new, name='customer_new'),
     url(r'^customer/(?P<pk>\d+)/edit/$', views.customer_edit, name='customer_edit'),
-    url(r'^worker/$', views.worker_site, name='worker_site'),
-    url(r'^worker/new/$', views.worker_new, name='worker_new'),
-    url(r'^worker/(?P<pk>\d+)/edit/$', views.worker_edit, name='worker_edit'),
+    url(r'^employee/$', views.employee_site, name='employee_site'),
+    url(r'^employee/new/$', views.employee_new, name='employee_new'),
+    url(r'^employee/(?P<pk>\d+)/edit/$', views.employee_edit, name='employee_edit'),
     url(r'^cloth/$', views.cloth_site, name='cloth_site'),
 ]

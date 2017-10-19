@@ -1,7 +1,18 @@
 from django.db import models
 from django.utils import timezone
 
-#PK niesu nikde  pridane, dovytvara si ich defaultne
+
+TITLE_CHOICES = (
+    ('Bc.', 'Bc.'),
+    ('Ing.', 'Ing.'),
+    ('Mgr.', 'Mgr.'),
+    ('PhDr.', 'PhDr.'),
+    ('PaedDr.', 'PaedDr.'),
+    ('RNDr.', 'RNDr.'),
+    ('MUDr.', 'MUDr.'),
+    ('PhD.', 'PhD.')
+)
+
 
 class Mark(models.Model):
     # pridatvat znacky bude vediet iba majitel a zamestannec
@@ -19,7 +30,7 @@ class Mark(models.Model):
 
     def __str__(self):
         return self.name_of_mark
-    
+
 
 class Employee(models.Model):
     # pracovnik musi spravovat aspon 1 znacku,
@@ -32,7 +43,7 @@ class Employee(models.Model):
     # po stlaceni cisel by ti malo niejak najst  danu hodnotu ak chceme nieco take implementovat 
     name = models.CharField(max_length=30)
     surname = models.CharField(max_length=30)
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=10, choices=TITLE_CHOICES)
     date_of_birth = models.DateField() 
     marks = models.ManyToManyField(Mark)
 

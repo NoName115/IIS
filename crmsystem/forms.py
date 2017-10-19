@@ -1,5 +1,14 @@
 from django import forms
 from django.contrib.auth import password_validation
+from .models import Employee
+
+
+class EmployeeForm(forms.ModelForm):
+    class Meta:
+        model = Employee
+        fields = [
+            'name', 'surname', 'title', 'date_of_birth', 'marks'
+        ]
 
 
 class RegistrationForm(forms.Form):
