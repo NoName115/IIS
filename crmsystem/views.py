@@ -50,6 +50,9 @@ def worker_new(request):
 def worker_edit(request, pk):
     return render(request, 'crmsystem/worker_detail.html', {'pk': pk})
 
+def cloth_site(request):
+    return render(request, 'crmsystem/cloth_site.html', {})
+
 def login_form(request):
     state = "Please log in below..."
     username = password = ''

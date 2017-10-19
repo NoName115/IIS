@@ -18,4 +18,5 @@ urlpatterns = [
     url(r'^worker/$', views.worker_site, name='worker_site'),
     url(r'^worker/new/$', views.worker_new, name='worker_new'),
     url(r'^worker/(?P<pk>\d+)/edit/$', views.worker_edit, name='worker_edit'),
+    url(r'^cloth/$', views.cloth_site, name='cloth_site'),
 ]

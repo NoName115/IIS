@@ -1,5 +1,18 @@
 {% extends 'crmsystem/base.html' %}
 
 {% block content %}
-<h1>Contract new</h1>
+<label for="">Kontaktne udaje o novom pracovnikovi</label>
+<div class="form-group">
+    <label for="">Meno*:</label>    
+    <input type="text" class="form-control" id="customer_name">
+</div>
+<div class="form-group">
+    <label for="">Priezvisko*:</label>
+    <input type="text" class="form-control" id="surname">
+</div> 
+<div class="form-group">
+    <label for="">Datum narodenia*:</label>
+    <input type="text" class="form-control" id="date_of_birth">
+</div>
+<button type="button" class="btn btn-primary">Ulozit</button>
 {% endblock %}

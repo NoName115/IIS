@@ -1,23 +1,10 @@
-{% extends 'crmsystem/base.html' %}
-
 {% block content %}
-<ul class="nav nav-tabs nav-fill">
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'role_site' %}">Home</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'contract_site' %}">Contract</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link active" href="{% url 'meeting_site' %}">Meeting</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'customer_site' %}">Customer</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'worker_site' %}">Worker</a>
-    </li>
-</ul>
+<div class="basic">
+    {% include "crmsystem/head.html" %}      
+    <script type="text/javascript">
+        changeClass("meeting_nav");
+    </script>
+</div>
 
 <div class="top-space-big"></div>
 

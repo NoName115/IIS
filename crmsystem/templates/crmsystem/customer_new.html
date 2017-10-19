@@ -1,5 +1,53 @@
 {% extends 'crmsystem/base.html' %}
 
 {% block content %}
-<h1>Customer new</h1>
+<label for="">Kontaktne udaje</label>
+<div class="form-group">
+    <label for="">Meno*:</label> 
+    <label for="">(V pripade pravnickej osoby uvedte meno osoby kt, ju zastupuje)</label>
+    <input type="text" class="form-control" id="customer_name">
+</div>
+<div class="form-group">
+    <label for="">Priezvisko*:</label>
+    <input type="text" class="form-control" id="surname">
+</div> 
+<div class="form-group">
+    <label for="">Datum narodenia*:</label>
+    <input type="text" class="form-control" id="date_of_birth">
+</div>
+<div class="form-group">
+    <label for="">Dodacia adresa</label>
+    <label for="">Mesto*:</label>
+    <input type="text" class="form-control" id="customer_city">
+</div>
+<div class="form-group">
+    <label for="">Ulica*:</label>
+    <input type="text" class="form-control" id="customer_street_name">
+</div>
+<div class="form-group">
+    <label for="">Cislo domu*:</label>
+    <input type="text" class="form-control" id="customer_street_number">
+</div>
+<div class="form-group">
+    <label for="">email*:</label>
+    <input type="text" class="form-control" id="customer_email">
+</div>
+<div class="form-group">
+    <label for="">Telefonne cislo*:</label>
+    <input type="text" class="form-control" id="customer_telephone_number">
+</div>
+ <label for="">Uvadzajte iba v pripade ze sa jedna o pravnicku osobu</label>
+ <h5>
+    <div class="form-group"> 
+        <label for="">Nazov firmy:</label>
+        <input type="text" class="form-control" id="customer_telephone_number">
+    </div>
+    <div class="form-group">
+        <label for="">ICO:</label>
+        <input type="text" class="form-control" id="customer_telephone_number">
+    </div>
+</h5>
+<button type="button" class="btn btn-primary">Ulozit</button>
+
+
 {% endblock %}

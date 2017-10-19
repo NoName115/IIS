@@ -16,6 +16,9 @@ class Mark(models.Model):
     # zatial neotestovane ale chcelo nieco instalovat,
     #Get Pillow at https://pypi.python.org/pypi/Pillow or run command "pip install Pillow".
     #logo_of_mark = models.ImageField(upload_to=None, height_field=None, width_field=None, max_length=100)
+
+    def __str__(self):
+        return self.name_of_mark
     
 
 class Employee(models.Model):
@@ -33,15 +36,22 @@ class Employee(models.Model):
     date_of_birth = models.DateField() 
     marks = models.ManyToManyField(Mark)
 
+    def __str__(self):
+        return (self.name + self.surname)
+
 class Customer(models.Model):
     #rozumnu kontrolu formatu cisla tel.
     #dal by som tam natvrdo predponu +421 a skontroloval pocet cisel
+    customer_id = models.IntegerField(primary_key=True)
     city = models.CharField(max_length=150)
     street_number = models.IntegerField()
     street_name = models.CharField(max_length=150)
     email = models.EmailField()
     telephone_number = models.CharField(max_length=50)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return ("id zakaznika: " + str(self.customer_id) + " "  + self.email)
 
 class Cloth(models.Model):
     # dobrovolna moznost pridania obrazku, 
@@ -54,51 +64,61 @@ class Cloth(models.Model):
     #image_of_cloth = models.ImageField(upload_to=None, height_field=None, width_field=None, max_length=100, null=True)
     mark = models.ForeignKey(Mark, on_delete=models.CASCADE)
 
-class Agreement(models.Model):
+    def __str__(self):
+        return self.name
+
+class Contract(models.Model):
     #kontrola ci  obsahuje aspon niejake oblecenie(taka samozrejmost)
     #vypocet celkovej sumy
     #kontrola cisla uctu, nekomplikovat, 
     # asi len IBAN podporovat a spocitat znaky tym padom
+    contract_id = models.IntegerField(primary_key=True)
     number_of_pieces = models.IntegerField()
     total_cost = models.IntegerField()
     city = models.CharField(max_length=150)
     street_number = models.IntegerField()
     street_name = models.CharField(max_length=150)
-    account_number = models.IntegerField() 
+    account_iban_number = models.IntegerField() 
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE,default=1)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     clothes = models.ManyToManyField(Cloth)
+
+    def __str__(self):
+        return str(self.contract_id)
 
 
 class Meeting(models.Model):
+    meeting_id = models.IntegerField(primary_key=True)
     some_date = models.DateTimeField( blank=True, null=True)
     description = models.TextField()
     customer = models.OneToOneField(Customer)
     employee = models.OneToOneField(Employee)
-
-    class Meta:
-        permissions = (
-            ("set_date", "Can set date"),
-        )
-
+ 
     def setDate(self):
         self.some_date = timezone.now()
         self.save()
 
     def __str__(self):
-        return self.email
-   
+        return str(self.meeting_id) 
+class Physical_person(models.Model):
+    physical_id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=30)
+    surname = models.CharField(max_length=30)
+    customer = models.OneToOneField(Customer)
+
+    def __str__(self):
+        return (self.name + self.surname +"id FO: " + str(self.physical_id)) 
 
 class Legal_person(models.Model):
     name = models.CharField(max_length=50)
-    customer = models.OneToOneField(Customer, null=True)
+    ico = models.CharField(primary_key=True, max_length=50)
+    customer = models.OneToOneField(Customer)
+    physical_person = models.ForeignKey(Physical_person, on_delete=models.CASCADE)
 
-class Physical_person(models.Model):
-    rc = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=30)
-    surname = models.CharField(max_length=30)
-    customer = models.OneToOneField(Customer, null=True)
-    legal_person = models.ForeignKey(Legal_person, on_delete=models.CASCADE)
+    def __str__(self):
+        return (self.ico)
+
+
     
 
 
