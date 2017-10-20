@@ -5,7 +5,7 @@ from django.contrib.auth.models import Group, User
 from django.contrib.auth import authenticate, login, logout
 
 from .models import *
-from .forms import EmployeeForm, RegistrationForm
+from .forms import *
 
 
 #@login_required(login_url='accounts/login/')
@@ -24,7 +24,23 @@ def contract_site(request):
     return render(request, 'crmsystem/contract_site.html', {})
 
 def contract_new(request):
-    return render(request, 'crmsystem/contract_new.html', {})
+    state = "Register new contract"
+    if (request.method == "POST"):
+        form = ContractForm(request.POST)
+        if (form.is_valid()):
+            mark = form.save(commit=False)
+            mark.save()
+            return redirect('contract_site')
+        else:
+            state = 'Invalid input data'
+    else:
+        form = ContractForm()
+
+    return render(
+        request,
+        'crmsystem/new_data.html',
+        {'form': form}
+    )
 
 def meeting_site(request):
     return render(request, 'crmsystem/meeting_site.html', {})
@@ -64,7 +80,7 @@ def employee_new(request):
 
     return render(
         request,
-        'crmsystem/employee_new.html',
+        'crmsystem/new_data.html',
         {'form': form}
     )
 
@@ -72,7 +88,52 @@ def employee_edit(request, pk):
     return render(request, 'crmsystem/employee_detail.html', {'pk': pk})
 
 def cloth_site(request):
-    return render(request, 'crmsystem/cloth_site.html', {})
+    marks = Mark.objects.all().order_by('name_of_mark')
+    clothes = Cloth.objects.all().order_by('name')
+    return render(request, 'crmsystem/cloth_site.html', {'marks': marks, 'clothes': clothes})
+
+def cloth_settings(request):
+    marks = Mark.objects.all().order_by('name_of_mark')
+    clothes = Cloth.objects.all().order_by('name')  
+    return render(request, 'crmsystem/cloth_settings.html', {'marks': marks, 'clothes': clothes})
+
+def cloth_new(request):
+    state = "Register new cloth"
+    if (request.method == "POST"):
+        form = ClothForm(request.POST)
+        if (form.is_valid()):
+            mark = form.save(commit=False)
+            mark.save()
+            return redirect('cloth_settings')
+        else:
+            state = 'Invalid input data'
+    else:
+        form = ClothForm()
+
+    return render(
+        request,
+        'crmsystem/new_data.html',
+        {'form': form}
+    )
+
+def mark_new(request):
+    state = "Register new mark"
+    if (request.method == "POST"):
+        form = MarkForm(request.POST)
+        if (form.is_valid()):
+            mark = form.save(commit=False)
+            mark.save()
+            return redirect('cloth_settings')
+        else:
+            state = 'Invalid input data'
+    else:
+        form = MarkForm()
+
+    return render(
+        request,
+        'crmsystem/new_data.html',
+        {'form': form}
+    )
 
 def login_form(request):
     state = "Please log in below..."

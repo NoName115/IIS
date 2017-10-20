@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import password_validation
-from .models import Employee
+from .models import *
 
 
 class EmployeeForm(forms.ModelForm):
@@ -9,7 +9,58 @@ class EmployeeForm(forms.ModelForm):
         fields = [
             'name', 'surname', 'title', 'date_of_birth', 'marks'
         ]
+class MarkForm(forms.ModelForm):
+    class Meta:
+        model = Mark
+        fields = [
+            'designer_name', 'designer_surname', 'name_of_mark'
+        ]
 
+class CustomerForm(forms.ModelForm):
+    class Meta:
+        model = Customer
+        fields = [
+            'customer_id', 'city', 'street_number', 'street_name', 
+            'email', 'telephone_number', 'employee'
+        ]
+
+class ClothForm(forms.ModelForm):
+    class Meta:
+        model = Cloth
+        fields = [
+            'name', 'description', 'color', 'size', 'cost_of_piece', 'mark'
+        ]
+
+class ContractForm(forms.ModelForm):
+    class Meta:
+        model = Contract
+        fields = [
+            'contract_id', 'number_of_pieces', 'total_cost', 'city',
+            'street_number', 'street_name', 'account_iban_number',
+            'employee', 'customer', 'clothes'
+        ]
+
+class MeetingForm(forms.ModelForm):
+    class Meta:
+        model = Meeting
+        fields = [
+            'meeting_id', 'some_date', 'description', 'customer',
+            'employee'
+        ]
+
+class Physical_personForm(forms.ModelForm):
+    class Meta:
+        model = Physical_person
+        fields = [
+            'physical_id', 'name', 'surname', 'customer',
+        ]
+
+class Legal_personForm(forms.ModelForm):
+    class Meta:
+        model = Legal_person
+        fields = [
+            'name', 'ico', 'customer', 'physical_person'
+        ]
 
 class RegistrationForm(forms.Form):
     error_messages = {

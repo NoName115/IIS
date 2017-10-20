@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crmsystem',
     'widget_tweaks',
+    
 ]
 
 MIDDLEWARE = [
@@ -121,3 +122,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+TEMPLATE_CONTEXT_PROCESSORS = ['crmsystem.context_processors.marks_processor',
+]
+

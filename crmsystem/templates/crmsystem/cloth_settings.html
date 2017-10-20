@@ -9,13 +9,15 @@
 </div>
 <div class="top-space-big"></div>
 
-<a href="{% url 'cloth_settings' %}"<button type="button" class="btn btn-info">set</button></a>
-{% for mark in marks %}
+<a href="{% url 'cloth_site' %}"<button type="button" class="btn btn-info">Close</button></a>
+<a href="{% url 'mark_new' %}"<button type="button" class="btn btn-info">Add Mark</button> </a>
+{% for mark in marks %} 
 <div class="dropdown">
     <div class="top-space-big"></div>
     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     {{mark}}
     </button>
+    <a href="{% url 'cloth_new' %}"<button type="button" class="btn btn-info">Add cloth</button></a>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         {% for cloth in clothes %}
             {% if cloth.mark == mark %}
