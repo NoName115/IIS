@@ -15,13 +15,13 @@
 <div class="dropdown">
     <div class="top-space-big"></div>
     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    {{mark}}
+        {{ mark }}
     </button>
     <a href="{% url 'cloth_new' %}"<button type="button" class="btn btn-info">Add cloth</button></a>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         {% for cloth in clothes %}
             {% if cloth.mark == mark %}
-        <a class="dropdown-item" href="#">{{cloth}}</a>
+                <a class="dropdown-item" href="#">{{cloth}}</a>
             {% endif %}
         {% endfor %}
     </div>

@@ -19,8 +19,7 @@ urlpatterns = [
     url(r'^employee/new/$', views.employee_new, name='employee_new'),
     url(r'^employee/(?P<pk>\d+)/edit/$', views.employee_edit, name='employee_edit'),
     url(r'^cloth/$', views.cloth_site, name='cloth_site'),
-    url(r'^cloth/settings$', views.cloth_settings, name='cloth_settings'),
-    url(r'^cloth/mark_new$$', views.mark_new, name='mark_new'),
-     url(r'^cloth_new/$', views.cloth_new, name='cloth_new'),
-
+    url(r'^cloth/settings/$', views.cloth_settings, name='cloth_settings'),
+    url(r'^cloth/mark/new/$', views.mark_new, name='mark_new'),
+    url(r'^cloth/new/$', views.cloth_new, name='cloth_new'),
 ]

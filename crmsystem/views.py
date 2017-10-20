@@ -29,6 +29,11 @@ def contract_new(request):
         form = ContractForm(request.POST)
         if (form.is_valid()):
             mark = form.save(commit=False)
+
+            # Tu vypocitat celkovu sumu kontraktu
+            # podla typu a poctu kusov oblecenia
+            mark.total_cost = 5
+
             mark.save()
             return redirect('contract_site')
         else:
@@ -39,7 +44,9 @@ def contract_new(request):
     return render(
         request,
         'crmsystem/new_data.html',
-        {'form': form}
+        {
+            'form': form
+        }
     )
 
 def meeting_site(request):
@@ -62,8 +69,10 @@ def employee_site(request):
     return render(
         request,
         'crmsystem/employee_site.html',
-        {'list': employee_list}
-        )
+        {
+            'list': employee_list
+        }
+    )
 
 def employee_new(request):
     state = "Register new employee"
@@ -81,7 +90,9 @@ def employee_new(request):
     return render(
         request,
         'crmsystem/new_data.html',
-        {'form': form}
+        {
+            'form': form
+        }
     )
 
 def employee_edit(request, pk):
@@ -90,12 +101,26 @@ def employee_edit(request, pk):
 def cloth_site(request):
     marks = Mark.objects.all().order_by('name_of_mark')
     clothes = Cloth.objects.all().order_by('name')
-    return render(request, 'crmsystem/cloth_site.html', {'marks': marks, 'clothes': clothes})
+    return render(
+        request,
+        'crmsystem/cloth_site.html',
+        {
+            'marks': marks,
+            'clothes': clothes
+        }
+    )
 
 def cloth_settings(request):
     marks = Mark.objects.all().order_by('name_of_mark')
     clothes = Cloth.objects.all().order_by('name')  
-    return render(request, 'crmsystem/cloth_settings.html', {'marks': marks, 'clothes': clothes})
+    return render(
+        request,
+        'crmsystem/cloth_settings.html',
+        {
+            'marks': marks,
+            'clothes': clothes
+        }
+    )
 
 def cloth_new(request):
     state = "Register new cloth"
@@ -113,7 +138,9 @@ def cloth_new(request):
     return render(
         request,
         'crmsystem/new_data.html',
-        {'form': form}
+        {
+            'form': form
+        }
     )
 
 def mark_new(request):
@@ -132,7 +159,9 @@ def mark_new(request):
     return render(
         request,
         'crmsystem/new_data.html',
-        {'form': form}
+        {
+            'form': form
+        }
     )
 
 def login_form(request):
@@ -163,6 +192,7 @@ def logout_form(request):
     return render(request, 'account/logout.html', {})
 
 def registration_form(request):
+    # TODO
     state = 'Welcome !!!!'
     com_owner_group = 'test'
     cus_ser_group = 'test_2'

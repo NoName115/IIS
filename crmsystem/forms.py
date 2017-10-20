@@ -9,6 +9,8 @@ class EmployeeForm(forms.ModelForm):
         fields = [
             'name', 'surname', 'title', 'date_of_birth', 'marks'
         ]
+
+
 class MarkForm(forms.ModelForm):
     class Meta:
         model = Mark
@@ -16,13 +18,15 @@ class MarkForm(forms.ModelForm):
             'designer_name', 'designer_surname', 'name_of_mark'
         ]
 
+
 class CustomerForm(forms.ModelForm):
     class Meta:
         model = Customer
         fields = [
-            'customer_id', 'city', 'street_number', 'street_name', 
+            'city', 'street_number', 'street_name', 
             'email', 'telephone_number', 'employee'
         ]
+
 
 class ClothForm(forms.ModelForm):
     class Meta:
@@ -31,36 +35,40 @@ class ClothForm(forms.ModelForm):
             'name', 'description', 'color', 'size', 'cost_of_piece', 'mark'
         ]
 
+
 class ContractForm(forms.ModelForm):
     class Meta:
         model = Contract
         fields = [
-            'contract_id', 'number_of_pieces', 'total_cost', 'city',
+            'total_cost', 'city',
             'street_number', 'street_name', 'account_iban_number',
             'employee', 'customer', 'clothes'
         ]
+
 
 class MeetingForm(forms.ModelForm):
     class Meta:
         model = Meeting
         fields = [
-            'meeting_id', 'some_date', 'description', 'customer',
-            'employee'
+            'description', 'customer', 'employee'
         ]
+
 
 class Physical_personForm(forms.ModelForm):
     class Meta:
         model = Physical_person
         fields = [
-            'physical_id', 'name', 'surname', 'customer',
+            'name', 'surname', 'customer',
         ]
+
 
 class Legal_personForm(forms.ModelForm):
     class Meta:
         model = Legal_person
         fields = [
-            'name', 'ico', 'customer', 'physical_person'
+            'ico', 'name', 'customer', 'physical_person'
         ]
+
 
 class RegistrationForm(forms.Form):
     error_messages = {
