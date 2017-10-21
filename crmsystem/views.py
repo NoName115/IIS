@@ -50,10 +50,35 @@ def contract_new(request):
     )
 
 def meeting_site(request):
-    return render(request, 'crmsystem/meeting_site.html', {})
+    mtg_list = Meeting.objects.all()
+    return render(
+        request,
+        'crmsystem/meeting_site.html',
+        {
+            'list': mtg_list
+        }
+    )
 
 def meeting_new(request):
-    return render(request, 'crmsystem/meeting_new.html', {})
+    state = "Create new meeting"
+    if (request.method == "POST"):
+        form = MeetingForm(request.POST)
+        if (form.is_valid()):
+            mtg = form.save(commit=False)
+            mtg.save()
+            return redirect('meeting_site')
+        else:
+            state = "Invalid input data"
+    else:
+        form = MeetingForm()
+
+    return render(
+        request,
+        'crmsystem/meeting_new.html',
+        {
+            'form': form
+        }
+    )
 
 def customer_site(request):
     return render(request, 'crmsystem/customer_site.html', {})
@@ -89,7 +114,7 @@ def employee_new(request):
 
     return render(
         request,
-        'crmsystem/new_data.html',
+        'crmsystem/employee_new.html',
         {
             'form': form
         }

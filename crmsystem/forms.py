@@ -50,7 +50,7 @@ class MeetingForm(forms.ModelForm):
     class Meta:
         model = Meeting
         fields = [
-            'description', 'customer', 'employee'
+            'customer', 'description', 'employee'
         ]
 
 
