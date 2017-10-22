@@ -2,6 +2,8 @@
 
 {% block content %}
 
+<h3>{{ state }}</h3>
+
 <form method="POST" novalidate>
     {% csrf_token %}
     {% include 'base_sites/bs4_form.html' with form=form %}

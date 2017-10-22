@@ -15,7 +15,7 @@ def contract_site(request):
     return render(request, 'crmsystem/contract_site.html', {})
 
 def contract_new(request):
-    state = "Register new contract"
+    state = "Vytvoriť novú zmluvu"
     if (request.method == "POST"):
         form = ContractForm(request.POST)
         if (form.is_valid()):
@@ -36,7 +36,8 @@ def contract_new(request):
         request,
         'crmsystem/contract_new.html',
         {
-            'form': form
+            'form': form,
+            'state': state,
         }
     )
 
@@ -67,7 +68,8 @@ def meeting_new(request):
         request,
         'crmsystem/meeting_new.html',
         {
-            'form': form
+            'form': form,
+            'state': state
         }
     )
 
@@ -174,7 +176,8 @@ def employee_new(request):
         request,
         'crmsystem/employee_new.html',
         {
-            'form': form
+            'form': form,
+            'state': state,
         }
     )
 

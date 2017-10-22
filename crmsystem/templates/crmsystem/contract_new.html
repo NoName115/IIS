@@ -2,19 +2,11 @@
 
 {% block content %}
 
-<label for="">Nova zmluva</label>
-<div class="form-group">
-    <label for="">Meno*:</label>    
-    <input type="text" class="form-control" id="customer_name">
-</div>
-<div class="form-group">
-    <label for="">Priezvisko*:</label>
-    <input type="text" class="form-control" id="surname">
-</div> 
-<div class="form-group">
-    <label for="">Datum narodenia*:</label>
-    <input type="text" class="form-control" id="date_of_birth">
-</div>
-<button type="button" class="btn btn-primary">Ulozit</button>
+<h3>{{ state }}</h3>
+<form method="POST" novalidate>
+    {% csrf_token %}
+    {% include 'base_sites/bs4_form.html' with form=form %}
+    <button type="submit" class="btn btn-primary">Vytvoriť zmluvu</button>
+</form>
 
 {% endblock %}

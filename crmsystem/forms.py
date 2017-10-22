@@ -31,8 +31,8 @@ class ContractForm(forms.ModelForm):
     class Meta:
         model = Contract
         fields = [
-            'total_cost', 'city',
-            'street_number', 'street_name', 'account_iban_number',
+            'city', 'street_number', 'street_name',
+            'account_iban_number',
             'employee', 'customer', 'clothes'
         ]
 

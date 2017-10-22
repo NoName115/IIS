@@ -66,7 +66,7 @@ class Customer(models.Model):
 
     def __str__(self):
         return (
-            str(self.pk) + " " + self.email
+            self.email
         )
 
 
