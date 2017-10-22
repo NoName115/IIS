@@ -1,16 +1,10 @@
+{% extends 'base_sites/base.html' %}
 
 {% block content %}
 
-<div class="basic">
-    {% include "crmsystem/head.html" %}      
-    <script type="text/javascript">
-        changeClass("cloth_nav");
-    </script>
-</div>
-<div class="top-space-big"></div>
-
 <a href="{% url 'cloth_site' %}"<button type="button" class="btn btn-info">Close</button></a>
-<a href="{% url 'mark_new' %}"<button type="button" class="btn btn-info">Add Mark</button> </a>
+<a href="{% url 'mark_new' %}"<button type="button" class="btn btn-info">Add Mark</button></a>
+
 {% for mark in marks %} 
 <div class="dropdown">
     <div class="top-space-big"></div>

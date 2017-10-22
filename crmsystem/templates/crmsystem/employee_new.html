@@ -1,9 +1,11 @@
-{% extends 'crmsystem/base.html' %}
+{% extends 'base_sites/base.html' %}
 
 {% block content %}
+
 <form method="POST" novalidate>
     {% csrf_token %}
-    {% include 'crmsystem/bs4_form.html' with form=form %}
-    <button type="submit" class="btn btn-primary">Submit</button>
+    {% include 'base_sites/bs4_form.html' with form=form %}
+    <button type="submit" class="btn btn-primary">Uložiť zamestnanca</button>
 </form>
+
 {% endblock %}

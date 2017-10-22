@@ -1,7 +1,8 @@
-{% extends 'crmsystem/base.html' %}
+{% extends 'base_sites/base.html' %}
 
 {% block content %}
-<label for="">Kontaktne udaje o novom pracovnikovi</label>
+
+<label for="">Nova zmluva</label>
 <div class="form-group">
     <label for="">Meno*:</label>    
     <input type="text" class="form-control" id="customer_name">
@@ -15,4 +16,5 @@
     <input type="text" class="form-control" id="date_of_birth">
 </div>
 <button type="button" class="btn btn-primary">Ulozit</button>
+
 {% endblock %}

@@ -8,17 +8,8 @@ from .models import *
 from .forms import *
 
 
-#@login_required(login_url='accounts/login/')
 def default_web(request):
-    if (request.method == "POST"):
-        redirect('role_site')
-
     return render(request, 'crmsystem/main.html', {})
-
-@login_required(login_url='../accounts/login/')
-def role_site(request):
-    # To bude stranka na vsetky hlavne tlacitka pre User-ov
-    return render(request, 'crmsystem/role_site.html', {})
 
 def contract_site(request):
     return render(request, 'crmsystem/contract_site.html', {})
@@ -43,7 +34,7 @@ def contract_new(request):
 
     return render(
         request,
-        'crmsystem/new_data.html',
+        'crmsystem/contract_new.html',
         {
             'form': form
         }
@@ -147,6 +138,8 @@ def cloth_settings(request):
         }
     )
 
+# TODO
+# Cez modálne okno to urobit v 'cloth_settings.html'
 def cloth_new(request):
     state = "Register new cloth"
     if (request.method == "POST"):

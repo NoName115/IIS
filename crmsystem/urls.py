@@ -3,11 +3,16 @@ from . import views
 
 
 urlpatterns = [
+    # Gome page
     url(r'^$', views.default_web, name='default_web'),
+
+    # Account pages
     url(r'^accounts/login/$', views.login_form, name='login_form'),
     url(r'^accounts/registration/$', views.registration_form, name='registration_form'),
     url(r'^accounts/logout/$', views.logout_form, name='logout_form'),
-    url(r'^role_site/$', views.role_site, name='role_site'),
+    
+    #url(r'^role_site/$', views.role_site, name='role_site'),
+
     url(r'^contract/$', views.contract_site, name='contract_site'),
     url(r'^contract/new/$', views.contract_new, name='contract_new'),
     url(r'^meeting/$', views.meeting_site, name='meeting_site'),
