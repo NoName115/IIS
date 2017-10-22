@@ -1,37 +1,47 @@
 <div class="collapse navbar-collapse" id="navbarsExampleDefault"-->
     <ul class="navbar-nav mr-auto">
-    <li class="nav-item">
-        <a class="nav-link" id='home_nav' href="{% url 'default_web' %}">Domov</a>
-    </li>
-    <!--
-        Nie len is_authenticated ale dorobit potom si ma permission
-        do danej kategorie
-    -->
-    {% if user.is_authenticated %}
-    <li class="nav-item">
-        <a class="nav-link" id="contract_nav" href="{% url 'contract_site' %}">Zmluvy</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="meeting_nav" href="{% url 'meeting_site' %}">Stretnutia</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="customer_nav" href="{% url 'customer_site' %}">Zákaznici</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="employee_nav" href="{% url 'employee_site' %}">Pracovníci</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="cloth_nav" href="{% url 'cloth_site' %}">Oblečenie</a>
-    </li>
-    {% endif %}
-    <!--li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-        <div class="dropdown-menu" aria-labelledby="dropdown01">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-    </li-->
+        <li class="nav-item">
+            <a class="nav-link" id='home_nav' href="{% url 'default_web' %}">Domov</a>
+        </li>
+
+        <!--
+            Nie len is_authenticated ale dorobit potom si ma permission
+            do danej kategorie
+
+            Uvazujem aby sme dali drop-down vsade a bude moznost
+                - celkove info, cize ako je teraz site
+                - pridat danu vec (zakaznik, pracovnik, ...)
+            ale ako pozeram, pre 2 veci sa to asi neoplati, lebo vymazat a upravit tam nemoze byt
+            iba zeby z toho siel dalsi zoznam a tam by boli vsetci zamestananci, pracovnici ale to by mohlo byt velmi velke
+        -->
+        <!--li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Dropdown
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+        </li-->
+
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+            <a class="nav-link" id="contract_nav" href="{% url 'contract_site' %}">Zmluvy</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="meeting_nav" href="{% url 'meeting_site' %}">Stretnutia</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="customer_nav" href="{% url 'customer_site' %}">Zákaznici</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="employee_nav" href="{% url 'employee_site' %}">Pracovníci</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="cloth_nav" href="{% url 'cloth_site' %}">Oblečenie</a>
+        </li>
+        {% endif %}
     </ul>
     <div class="my-2 my-lg-0">
         {% if user.is_authenticated %}
@@ -47,6 +57,7 @@
         {% endif %}
     </div>
 </div>
+
 <script type="text/javascript">
     function changeClass(a)
     {

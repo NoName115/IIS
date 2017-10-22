@@ -19,15 +19,6 @@ class MarkForm(forms.ModelForm):
         ]
 
 
-class CustomerForm(forms.ModelForm):
-    class Meta:
-        model = Customer
-        fields = [
-            'city', 'street_number', 'street_name', 
-            'email', 'telephone_number', 'employee'
-        ]
-
-
 class ClothForm(forms.ModelForm):
     class Meta:
         model = Cloth
@@ -54,20 +45,65 @@ class MeetingForm(forms.ModelForm):
         ]
 
 
-class Physical_personForm(forms.ModelForm):
-    class Meta:
-        model = Physical_person
-        fields = [
-            'name', 'surname', 'customer',
-        ]
-
-
 class Legal_personForm(forms.ModelForm):
     class Meta:
         model = Legal_person
         fields = [
-            'ico', 'name', 'customer', 'physical_person'
+            'ico', 'name',
         ]
+        labels = {
+            'ico': 'IČO',
+            'name': 'Meno',
+        }
+
+
+class CustomerForm(forms.Form):
+    error_messages = {
+        'email_exist': ("This email address already exist")
+    }
+
+    first_name = forms.CharField(
+        label='Meno',
+        max_length=150
+    )
+    last_name = forms.CharField(
+        label='Priezvisko',
+        max_length=150
+    )
+    email = forms.EmailField(
+        help_text='Must be in format \'name@server.ext\''
+    )
+    telephone_number = forms.CharField(
+        label='Telefónne číslo'
+    )
+    date_of_birth = forms.DateField(
+        label='Dátum narodenia',
+        input_formats=[
+            '%m.%d.%y',
+            '%m.%d.%Y',
+            '%m-%d-%y',
+            '%m-%d-%Y',
+        ],
+        help_text='Podporovaný formár: mm.dd.yy, mm.dd.yyyy, mm-dd-yy, mm-dd-yyyy'
+    )
+    city_name = forms.CharField(
+        label='Mesto'
+    )
+    street_name = forms.CharField(
+        label='Ulica'
+    )
+    street_number = forms.IntegerField(
+        label='Číslo ulice'
+    )
+
+    def clean_email(self):
+        my_email = self.cleaned_data.get('email')
+        if (Customer.objects.filter(email=my_email)):
+            raise forms.ValidationError(
+                self.error_messages['email_exist'],
+                code='email_exist',
+            )
+        return my_email
 
 
 class RegistrationForm(forms.Form):

@@ -57,10 +57,10 @@ class Customer(models.Model):
     # TODO
     # Kontrola telefonneho cisla
 
+    email = models.EmailField(primary_key=True)
     city = models.CharField(max_length=150)
     street_number = models.IntegerField()
     street_name = models.CharField(max_length=150)
-    email = models.EmailField()
     telephone_number = models.CharField(max_length=50)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
 

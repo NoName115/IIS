@@ -2,6 +2,40 @@
 
 {% block content %}
 
-<h1>Customer new</h1>
+<h3>{{ state }}</h3>
+<form method="POST" novalidate>
+    {% csrf_token %}
+    {% include 'base_sites/bs4_form.html' with form=form_1 %}
+
+    <!--p>
+        <a class="btn btn-primary" data-toggle="collapse" href="#collapseLegalPerson" aria-expanded="false" aria-controls="collapseExample">
+            Registrovať ako právnicka osoba
+        </a>
+    </p-->
+
+    <div class="form-group">
+        <label class="form-check-label">
+            <input {% if checked %} checked="checked" {% endif %} type="checkbox" class="form-check-input" data-toggle="collapse" href="#collapseLegalPerson" name="legalperson" id="id_legalperson">
+            Právnicka osoba
+        </label>
+    </div>
+
+    <div class="collapse" id="collapseLegalPerson">
+        <div class="card card-body">
+            {% include 'base_sites/bs4_form.html' with form=form_2 %}
+        </div>
+    </div>
+
+    <div class="top-space-small"></div>
+    <button type="submit" class="btn btn-primary">Uložiť zákaznika</button>
+
+    {% if checked %}
+    <script>
+        $('#collapseLegalPerson').collapse({
+            show: true
+        })
+    </script>
+    {% endif %}
+</form>
 
 {% endblock %}
