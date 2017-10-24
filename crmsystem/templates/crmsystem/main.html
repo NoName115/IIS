@@ -7,8 +7,10 @@
 </script>
 
 <h2 class="display-3">
-    Vitaj {% if user.is_authenticated %} {{ user.get_username }} {% else %} náhodny človek {% endif %}!
+    Vitajte {% if user.is_authenticated %} {{ user.get_username }} {% else %} náhodny človek {% endif %}!
 </h2>
+<p></p>
+
 {% if not user.is_authenticated %}
 <p>
     Toto je hlavná stranka projektu na predmet IIS. Téma: CRM systém

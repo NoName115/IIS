@@ -28,6 +28,12 @@ class ClothForm(forms.ModelForm):
 
 
 class ContractForm(forms.ModelForm):
+    account_iban_number = forms.RegexField(
+        label='IBAN číslo účtu',
+        max_length=40,
+        regex=r'^[A-Z]{2,2}[0-9A-Z]{16,30}$',
+    )
+
     class Meta:
         model = Contract
         fields = [
@@ -46,13 +52,17 @@ class MeetingForm(forms.ModelForm):
 
 
 class Legal_personForm(forms.ModelForm):
+    ico = forms.RegexField(
+        label='ICO',
+        max_length=8,
+        regex=r'(^[0-9]{6,6}$)|(^[0-9]{8,8}$)',
+    )
     class Meta:
         model = Legal_person
         fields = [
             'ico', 'name',
         ]
         labels = {
-            'ico': 'IČO',
             'name': 'Meno',
         }
 
@@ -73,8 +83,11 @@ class CustomerForm(forms.Form):
     email = forms.EmailField(
         help_text='Must be in format \'name@server.ext\''
     )
-    telephone_number = forms.CharField(
-        label='Telefónne číslo'
+    telephone_number = forms.RegexField(
+        label='Telefónne číslo',
+        max_length=50,
+        regex=r'^(\+|00)([0-9,-]+) ([0-9,-]{1,})$',
+        help_text='Formát čísla (+/00)country_code number',
     )
     date_of_birth = forms.DateField(
         label='Dátum narodenia',
@@ -93,7 +106,8 @@ class CustomerForm(forms.Form):
         label='Ulica'
     )
     street_number = forms.IntegerField(
-        label='Číslo ulice'
+        label='Číslo ulice',
+        min_value=0,
     )
 
     def clean_email(self):

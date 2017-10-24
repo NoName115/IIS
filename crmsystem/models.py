@@ -59,7 +59,7 @@ class Customer(models.Model):
 
     email = models.EmailField(primary_key=True)
     city = models.CharField(max_length=150)
-    street_number = models.IntegerField()
+    street_number = models.PositiveSmallIntegerField()
     street_name = models.CharField(max_length=150)
     telephone_number = models.CharField(max_length=50)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
@@ -92,9 +92,9 @@ class Contract(models.Model):
 
     total_cost = models.IntegerField()
     city = models.CharField(max_length=150)
-    street_number = models.IntegerField()
+    street_number = models.PositiveSmallIntegerField()
     street_name = models.CharField(max_length=150)
-    account_iban_number = models.IntegerField()
+    account_iban_number = models.CharField(max_length=40)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     clothes = models.ManyToManyField(Cloth)

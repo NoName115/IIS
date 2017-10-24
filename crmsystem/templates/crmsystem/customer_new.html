@@ -5,8 +5,6 @@
 <h3>{{ state }}</h3>
 <form method="POST" novalidate>
     {% csrf_token %}
-    {% include 'base_sites/bs4_form.html' with form=form_1 %}
-
     <div class="form-group">
         <label class="form-check-label">
             <input {% if checked %} checked="checked" {% endif %} type="checkbox" class="form-check-input" data-toggle="collapse" href="#collapseLegalPerson" name="legalperson" id="id_legalperson">
@@ -19,6 +17,8 @@
             {% include 'base_sites/bs4_form.html' with form=form_2 %}
         </div>
     </div>
+
+    {% include 'base_sites/bs4_form.html' with form=form_1 %}
 
     <div class="top-space-small"></div>
     <button type="submit" class="btn btn-primary">Uložiť zákaznika</button>
