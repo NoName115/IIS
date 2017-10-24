@@ -7,8 +7,16 @@ class EmployeeForm(forms.ModelForm):
     class Meta:
         model = Employee
         fields = [
-            'name', 'surname', 'title', 'date_of_birth', 'marks'
+            'username','name', 'surname', 'title', 'date_of_birth', 'marks'
         ]
+        labels = {
+            'username': 'Login',
+            'name': 'Meno',
+            'surname': 'Priezvisko',
+            'title': 'Titul',
+            'date_of_birth': 'Datum narodenia',
+            'marks': 'Znacky'
+        }
 
 
 class MarkForm(forms.ModelForm):
@@ -39,7 +47,7 @@ class ContractForm(forms.ModelForm):
         fields = [
             'city', 'street_number', 'street_name',
             'account_iban_number',
-            'employee', 'customer', 'clothes'
+            'employee', 'customer'
         ]
 
 

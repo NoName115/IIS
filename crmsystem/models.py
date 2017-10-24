@@ -41,6 +41,7 @@ class Employee(models.Model):
     #stringu title
     #na datumy urobit taku peknu rozklikavacku kde is mozes vybrat a nemusis manualne pisat
     # po stlaceni cisel by ti malo niejak najst  danu hodnotu ak chceme nieco take implementovat 
+    username = models.CharField(max_length=30)
     name = models.CharField(max_length=30)
     surname = models.CharField(max_length=30)
     title = models.CharField(max_length=10, choices=TITLE_CHOICES)
@@ -52,17 +53,27 @@ class Employee(models.Model):
             self.title + " " + self.name + " " + self.surname
         )
 
+class Legal_person(models.Model):
+    ico = models.CharField(primary_key=True, max_length=50)
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.ico
 
 class Customer(models.Model):
     # TODO
     # Kontrola telefonneho cisla
 
+    
     email = models.EmailField(primary_key=True)
+    name = models.CharField(max_length=30)
+    surname = models.CharField(max_length=30)
     city = models.CharField(max_length=150)
     street_number = models.PositiveSmallIntegerField()
     street_name = models.CharField(max_length=150)
     telephone_number = models.CharField(max_length=50)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    legal_person = models.ForeignKey(Legal_person, on_delete=models.CASCADE)
 
     def __str__(self):
         return (
@@ -97,7 +108,7 @@ class Contract(models.Model):
     account_iban_number = models.CharField(max_length=40)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    clothes = models.ManyToManyField(Cloth)
+
 
     def __str__(self):
         return str(self.pk)
@@ -105,29 +116,14 @@ class Contract(models.Model):
 
 class Meeting(models.Model):
     description = models.TextField()
-    customer = models.OneToOneField(Customer)
-    employee = models.OneToOneField(Employee)
+    customer = models.ManyToManyField(Customer)
+    employee = models.ManyToManyField(Employee)
 
     def __str__(self):
         return str(self.pk) 
 
 
-class Physical_person(models.Model):
-    name = models.CharField(max_length=30)
-    surname = models.CharField(max_length=30)
-    customer = models.OneToOneField(Customer)
-
-    def __str__(self):
-        return (
-            str(self.pk) + " " + self.name + " " + self.surname
-        )
-
-
-class Legal_person(models.Model):
-    ico = models.CharField(primary_key=True, max_length=50)
-    name = models.CharField(max_length=50)
-    customer = models.OneToOneField(Customer)
-    physical_person = models.ForeignKey(Physical_person, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.ico
+class Contain(models.Model):
+    num_of_pieces = models.IntegerField()
+    contract = models.ForeignKey(Contract, on_delete=models.CASCADE)
+    cloth = models.ForeignKey(Cloth, on_delete=models.CASCADE)
