@@ -25,6 +25,12 @@ class MarkForm(forms.ModelForm):
         fields = [
             'designer_name', 'designer_surname', 'name_of_mark'
         ]
+        labels = {
+            'designer_name': 'Meno dizajnéra',
+            'designer_surname': 'Priezvisko dizajnéra',
+            'name_of_mark': 'Názov značky' 
+        }
+
 
 
 class ClothForm(forms.ModelForm):
@@ -33,6 +39,14 @@ class ClothForm(forms.ModelForm):
         fields = [
             'name', 'description', 'color', 'size', 'cost_of_piece', 'mark'
         ]
+        labels = {
+            'name': 'Názov',
+            'description': 'Popis',
+            'color': 'Farba' ,
+            'size': 'Veľkosť',
+            'cost_of_piece': 'Cena za kus',
+            'mark': 'Značka'
+        }
 
 
 class ContractForm(forms.ModelForm):

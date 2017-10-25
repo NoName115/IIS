@@ -1,0 +1,19 @@
+{% extends 'base_sites/base.html' %}
+
+{% block content %}
+
+<h3>{{ state }}</h3>
+
+<form method="POST" novalidate>
+    {% csrf_token %}
+    {% include 'base_sites/bs4_form.html' with form=form %}
+    <button type="submit" class="btn btn-primary">Uložiť značku</button>
+
+    <!--select class="selectpicker" data-live-search="true">
+        <option data-tokens="hot dog soda">Hot Dog, Fries and a Soda</option>
+        <option data-tokens="burger shake smile">Burger, Shake and a Smile</option>
+        <option data-tokens="sugar spice">Sugar, Spice and all things nice</option>
+    </select-->
+
+</form>
+{% endblock %}

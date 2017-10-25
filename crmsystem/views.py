@@ -225,7 +225,7 @@ def cloth_new(request):
 
     return render(
         request,
-        'crmsystem/new_data.html',
+        'crmsystem/cloth_new.html',
         {
             'form': form
         }
@@ -246,7 +246,7 @@ def mark_new(request):
 
     return render(
         request,
-        'crmsystem/new_data.html',
+        'crmsystem/mark_new.html',
         {
             'form': form
         }

@@ -2,26 +2,53 @@
 
 {% block content %}
 
+
+
 <script type="text/javascript">
     changeClass("cloth_nav");
 </script>
 
-<a href="{% url 'cloth_settings' %}"<button type="button" class="btn btn-info">set</button></a>
+<div class="card-block">
+    <h4 class="card-title">Značky</h4>
+  <ul class="list-group list-group-flush">
+    {% for mark in marks %}
 
-{% for mark in marks %}
-<div class="dropdown">
-    <div class="top-space-big"></div>
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    {{mark}}
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        {% for cloth in clothes %}
-            {% if cloth.mark == mark %}
-                <a class="dropdown-item" href="#">{{cloth}}</a>
-            {% endif %}
-        {% endfor %}
-    </div>
-</div>
-{% endfor %}
+            <p>
+                <div class="btn-group">                   
+                    <a class="btn btn-primary btn-lg btn-block"  data-toggle="collapse" href=#{{mark}} aria-expanded="false">{{mark}}</a>
+                    <a <button class="btn btn-primary"  href="{% url 'cloth_new' %} "type="button"><i class="material-icons" style="font-size:48px; color:white;">add</i></button> </a>
+                </div>
+            </p>
+            <div class="collapse" id={{mark}}>
+                <div class="card card-body">
+                    {% for cloth in clothes %}
+                        {% if cloth.mark == mark %}
+                            <div class="card">
+                                <h5 class="mb-0">
+                                    <a class="collapsed" data-toggle="collapse" href=#{{cloth}} aria-expanded="false" aria-controls="collapseTwo">
+                                        {{cloth}}
+                                     </a>
+                                </h5>
+                                <div id={{cloth}} class="collapse">
+                                    <div class="card-body">
+                                        Farba: {{cloth.color}} <br>
+                                        Veľkosť: {{cloth.size}} <br>
+                                        Cena za kus: {{cloth.cost_of_piece}} <br>
+                                        Popis: {{cloth.description}}
+                                    </div>  
+                                </div>
+                             </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+    {% endfor %}
+
+        
+        <p>  <div <a <button class="btn btn-primary"  href="{% url 'mark_new' %} "type="button"><i class="material-icons" style="font-size:48px; color:white;">add</i></button> </a>   </div> </p>      
+  </ul>
+</div> 
+
 
 {% endblock %}

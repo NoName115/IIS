@@ -27,4 +27,5 @@ urlpatterns = [
     url(r'^cloth/settings/$', views.cloth_settings, name='cloth_settings'),
     url(r'^cloth/mark/new/$', views.mark_new, name='mark_new'),
     url(r'^cloth/new/$', views.cloth_new, name='cloth_new'),
+
 ]
