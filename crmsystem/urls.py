@@ -10,9 +10,8 @@ urlpatterns = [
     url(r'^accounts/login/$', views.login_form, name='login_form'),
     url(r'^accounts/registration/$', views.registration_form, name='registration_form'),
     url(r'^accounts/logout/$', views.logout_form, name='logout_form'),
-    
-    #url(r'^role_site/$', views.role_site, name='role_site'),
 
+    # Other pages
     url(r'^contract/$', views.contract_site, name='contract_site'),
     url(r'^contract/new/$', views.contract_new, name='contract_new'),
     url(r'^meeting/$', views.meeting_site, name='meeting_site'),
@@ -24,8 +23,6 @@ urlpatterns = [
     url(r'^employee/new/$', views.employee_new, name='employee_new'),
     url(r'^employee/(?P<pk>\d+)/edit/$', views.employee_edit, name='employee_edit'),
     url(r'^cloth/$', views.cloth_site, name='cloth_site'),
-    url(r'^cloth/settings/$', views.cloth_settings, name='cloth_settings'),
     url(r'^cloth/mark/new/$', views.mark_new, name='mark_new'),
-    url(r'^cloth/new/$', views.cloth_new, name='cloth_new'),
-
+    url(r'^cloth/(?P<pk>\d+)/new/$', views.cloth_new, name='cloth_new'),
 ]

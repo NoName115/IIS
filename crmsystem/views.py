@@ -1,5 +1,4 @@
-from django.shortcuts import render, redirect
-from django.utils import timezone
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group, User
 from django.contrib.auth import authenticate, login, logout
@@ -196,30 +195,17 @@ def cloth_site(request):
         }
     )
 
-def cloth_settings(request):
-    marks = Mark.objects.all().order_by('name_of_mark')
-    clothes = Cloth.objects.all().order_by('name')  
-    return render(
-        request,
-        'crmsystem/cloth_settings.html',
-        {
-            'marks': marks,
-            'clothes': clothes
-        }
-    )
+def cloth_new(request, pk):
+    mark_object = get_object_or_404(Mark, pk=pk)
+    state = "Nové oblečenie pre značku: " + mark_object.name_of_mark
 
-# TODO
-# Cez modálne okno to urobit v 'cloth_settings.html'
-def cloth_new(request):
-    state = "Register new cloth"
     if (request.method == "POST"):
         form = ClothForm(request.POST)
         if (form.is_valid()):
-            mark = form.save(commit=False)
-            mark.save()
-            return redirect('cloth_settings')
-        else:
-            state = 'Invalid input data'
+            new_cloth = form.save(commit=False)
+            new_cloth.mark = mark_object
+            new_cloth.save()
+            return redirect('cloth_site')
     else:
         form = ClothForm()
 
@@ -227,7 +213,8 @@ def cloth_new(request):
         request,
         'crmsystem/cloth_new.html',
         {
-            'form': form
+            'form': form,
+            'state': state,
         }
     )
 

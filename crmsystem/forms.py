@@ -34,18 +34,20 @@ class MarkForm(forms.ModelForm):
 
 
 class ClothForm(forms.ModelForm):
+    cost_of_piece = forms.DecimalField(
+        label='Cena za kus',
+        decimal_places=2,
+        max_digits=12,
+        min_value=0.00,
+    )
     class Meta:
         model = Cloth
-        fields = [
-            'name', 'description', 'color', 'size', 'cost_of_piece', 'mark'
-        ]
+        exclude = ('mark',)
         labels = {
             'name': 'Názov',
             'description': 'Popis',
             'color': 'Farba' ,
             'size': 'Veľkosť',
-            'cost_of_piece': 'Cena za kus',
-            'mark': 'Značka'
         }
 
 
@@ -108,7 +110,7 @@ class CustomerForm(forms.Form):
     telephone_number = forms.RegexField(
         label='Telefónne číslo',
         max_length=50,
-        regex=r'^(\+|00)([0-9,-]+) ([0-9,-]{1,})$',
+        regex=r'^(\+|00)([0-9,\-]+) ([0-9,\-, ]{1,})$',
         help_text='Formát čísla (+/00)country_code number',
     )
     date_of_birth = forms.DateField(

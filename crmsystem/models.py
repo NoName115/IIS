@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+from django.core.validators import MinValueValidator
+from decimal import Decimal
 
 
 TITLE_CHOICES = (
@@ -15,21 +17,14 @@ TITLE_CHOICES = (
 
 
 class Mark(models.Model):
-    # pridatvat znacky bude vediet iba majitel a zamestannec
-    # v ER je ze kazda znacka by mala mat aspon 1 typ oblecenia,
-    # bude niejake tlacidlo na znacky co ti ich zobrazi, a tie co
-    # nebudu mat ziadne typy oblecenia budu bud sive bez hyperlinku,
-    # alebo zobrazi stranku ze : zial momentlalne nemame na sklade 
-    # zbozi danej znacky alebo nieco na ten styl 
     designer_name = models.CharField(max_length=30)
     designer_surname = models.CharField(max_length=30)
     name_of_mark = models.CharField(max_length=30)
-    # zatial neotestovane ale chcelo nieco instalovat,
     #Get Pillow at https://pypi.python.org/pypi/Pillow or run command "pip install Pillow".
     #logo_of_mark = models.ImageField(upload_to=None, height_field=None, width_field=None, max_length=100)
 
     def __str__(self):
-        return self.name_of_mark
+        return str(self.pk) + self.name_of_mark
 
 
 class Employee(models.Model):
@@ -64,7 +59,6 @@ class Customer(models.Model):
     # TODO
     # Kontrola telefonneho cisla
 
-    
     email = models.EmailField(primary_key=True)
     name = models.CharField(max_length=30)
     surname = models.CharField(max_length=30)
@@ -85,10 +79,13 @@ class Cloth(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField()
     color = models.IntegerField()
-    size = models.IntegerField()
-    cost_of_piece = models.FloatField()
+    size = models.PositiveSmallIntegerField()
+    cost_of_piece = models.DecimalField(decimal_places=2, max_digits=12)
     mark = models.ForeignKey(Mark, on_delete=models.CASCADE)
     #image_of_cloth = models.ImageField(upload_to=None, height_field=None, width_field=None, max_length=100, null=True)
+
+    def getName(self):
+        return self.name + " - " + str(self.size)
 
     def __str__(self):
         return self.name
