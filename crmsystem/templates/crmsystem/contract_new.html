@@ -5,13 +5,13 @@
 <h3>{{ state }}</h3>
 <form method="POST" novalidate>
     {% csrf_token %}
-    {% include 'base_sites/bs4_form.html' with form=form_1 %}
+    {% include 'base_sites/bs4_form.html' with form=form_1 show_validation=show_validation%}
 
     <label>Produkty:</label>
 
     {% for contain in form_list %}
     <div class="form-row">
-        <div class="form-group col-md-7">
+        <div class="form-group col-md-8">
             <select name="cloth__{{ contain.1 }}" placeholder="Oblečenie" required class="form-control" id="id_cloth__{{ contain.1 }}">
                 {% for id, name in contain.0.cloth.field.choices %}
                     <option value="{{ id }}"
@@ -28,29 +28,26 @@
         <div class="form-group col-md-4">
             <input type="number" name="num_of_pieces__{{ contain.1 }}" value="{{ contain.0.num_of_pieces.value }}" placeholder="Počet kusov" required class="form-control" min="0" id="id_num_of_pieces__{{ contain.1 }}"/>
         </div>
-        <div class="form-group col-md-1">
-            {% if form_list|length != 1 %}
-            <a class="btn btn-danger btn-block" href="#">
-                <i class="material-icons" style="font-size:18px; color:white;">
-                    delete
-                </i>
-            </a>
-            {% endif %}
-        </div>
+        
     </div>
     {% endfor %}
 
     <div class="form-row">
-        <div class="form-group col-md-4"></div>
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-2"></div>
+        <div class="form-group col-md-3">
             <button type="submit" class="btn btn-primary btn-lg btn-block" name="add_product" id="add_product">
                 Pridať další produkt
             </button>
         </div>
-        <div class="form-group col-md-4"></div>
-        <!--button type="submit" class="btn btn-primary btn-lg btn-block" name="add_product" id="add_product">
-            Pridať další produkt
-        </button-->
+        <div class="form-group col-md-2"></div>
+        <div class="form-group col-md-3">
+            {% if form_list|length != 1 %}
+            <button type="submit" class="btn btn-danger btn-block" name="remove_product" id="id_remove_product">
+                Odstrániť posledný produkt
+            </button>
+            {% endif %}
+        </div>
+        <div class="form-group col-md-2"></div>
     </div>
 
     <div class="top-space-small"></div>

@@ -21,71 +21,102 @@ def contract_site(request):
     )
 
 def contract_new(request):
-    def checkProductList():
-        pass
+    def is_productlist_ok(request_post):
+        keys_dict = {}
+        form_list = []
+        all_valid = True
+
+        print(request.POST)
+
+        # Filter keys from POST
+        for key, value in request_post.items():
+            if ((nop_name in key) or (cloth_name in key)):
+                keys_dict.update({
+                    key: value
+                })
+
+        # Get maximum index
+        maximum = max(
+            [int(key.split(delimiter)[1]) for key in keys_dict]
+        )
+
+        print(maximum)
+
+        # Create dictionaries for forms
+        for i in range(0, maximum + 1):
+            form_dict = {
+                nop_name: request_post[nop_name + delimiter + str(i)],
+                cloth_name: request_post[cloth_name + delimiter + str(i)],
+            }
+            new_containform = ContainForm(form_dict)
+            form_list.append(
+                (
+                    new_containform,
+                    i,
+                    int(form_dict[cloth_name]) if (form_dict[cloth_name]) else 0
+                )
+            )
+
+            if (not new_containform.is_valid()):
+                all_valid = False
+
+        return {
+            'is_valid': all_valid,
+            'form_list': form_list,
+            'maximum': maximum,
+        }
 
     state = "Vytvoriť novú zmluvu"
     nop_name = 'num_of_pieces'
     cloth_name = 'cloth'
     delimiter = '__'
+    show_validation = True
 
     if (request.method == "POST"):
-        # Debug POST
-        print(request.POST)
-
         contract_form = ContractForm(request.POST)
-        form_list = []
+
+        # Remove last product
+        if ('remove_product' in request.POST):
+            show_validation = False
+            product_dict = is_productlist_ok(request.POST)
+            product_dict['form_list'] = product_dict['form_list'][:-1]
 
         # Add new product
-        if ('add_product' in request.POST):
-            product_dict = {}
+        elif ('add_product' in request.POST):
+            show_validation = False
+            product_dict = is_productlist_ok(request.POST)
 
-            # Filter keys from POST
-            for key, value in request.POST.items():
-                if ((nop_name in key) or (cloth_name in key)):
-                    product_dict.update({
-                        key: value
-                    })
-
-            # Get maximum index
-            maximum = max(
-                [int(key.split(delimiter)[1]) for key in product_dict]
-            )
-
-            all_valid = True
-
-            # Create dictionaries for forms
-            #product_list = []
-            for i in range(0, maximum + 1):
-                form_dict = {
-                    nop_name: request.POST[nop_name + delimiter + str(i)],
-                    cloth_name: request.POST[cloth_name + delimiter + str(i)],
-                }
-                new_containform = ContainForm(form_dict)
-                form_list.append(
-                    (new_containform, i, int(form_dict[cloth_name]) if (form_dict[cloth_name]) else 0)
+            if (product_dict['is_valid']):
+                product_dict['form_list'].append(
+                    (ContainForm(), product_dict['maximum'] + 1, 0)
                 )
+        else:
+            # Only check form_list
+            product_dict = is_productlist_ok(request.POST)
 
-                print(form_dict[cloth_name])
+            if (product_dict['is_valid'] and
+               contract_form.is_valid() and
+               len(product_dict['form_list']) >= 1):
+                contract = contract_form.save(commit=False)
 
-                if (not new_containform.is_valid()):
-                    all_valid = False
-                    print("ERROR: " + str(i))
+                # Calculate total price
+                total_price = 0.0
+                contain_list = []
+                for product_tuple in product_dict['form_list']:
+                    contain = product_tuple[0].save(commit=False)
+                    total_price += float(contain.cloth.cost_of_piece)
+                    contain_list.append(contain)
 
-            if (all_valid):
-                form_list.append((ContainForm(), maximum + 1, 0))
+                contract.total_cost = total_price
+                contract.save()
 
-        '''
-        if (contract_form.is_valid()):
-            mark = contract_form.save(commit=False)
+                for contain in contain_list:
+                    contain.contract = contract
+                    contain.save()
 
-            # Tu vypocitat celkovu sumu kontraktu
-            # podla typu a poctu kusov oblecenia
-            mark.total_cost = 5
+                return redirect('contract_site')
 
-            mark.save()
-            return redirect('contract_site')
-        '''
+        form_list = product_dict['form_list']
     else:
         contract_form = ContractForm()
         form_list = [
@@ -99,6 +130,7 @@ def contract_new(request):
             'form_1': contract_form,
             'form_list': form_list,
             'state': state,
+            'show_validation': show_validation,
         }
     )
 
