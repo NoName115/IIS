@@ -26,8 +26,6 @@ def contract_new(request):
         form_list = []
         all_valid = True
 
-        print(request.POST)
-
         # Filter keys from POST
         for key, value in request_post.items():
             if ((nop_name in key) or (cloth_name in key)):
@@ -326,9 +324,8 @@ def mark_new(request):
     if (request.method == "POST"):
         form = MarkForm(request.POST)
         if (form.is_valid()):
-            mark = form.save(commit=False)
-            mark.save()
-            return redirect('cloth_settings')
+            form.save()
+            return redirect('cloth_site')
         else:
             state = 'Invalid input data'
     else:

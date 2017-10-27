@@ -26,16 +26,13 @@ class Mark(models.Model):
     def __str__(self):
         return str(self.pk) + self.name_of_mark
 
+    class Meta:
+        permissions = (
+            ("show_mark", "Can show mark"),
+        )
+
 
 class Employee(models.Model):
-    # pracovnik musi spravovat aspon 1 znacku,
-    # niejak rozumne to overit, napriklad pri jeho vytvarani 
-    #titul, ci nechame jedno texto pole kde to proste napises,
-    #alebo urobit moznost pridat titul, co ti stale rekurzivne 
-    #prida do databazy field, alebo idealne iba prida na koniec 
-    #stringu title
-    #na datumy urobit taku peknu rozklikavacku kde is mozes vybrat a nemusis manualne pisat
-    # po stlaceni cisel by ti malo niejak najst  danu hodnotu ak chceme nieco take implementovat 
     username = models.CharField(max_length=30)
     name = models.CharField(max_length=30)
     surname = models.CharField(max_length=30)
@@ -46,6 +43,11 @@ class Employee(models.Model):
     def __str__(self):
         return (
             self.title + " " + self.name + " " + self.surname
+        )
+
+    class Meta:
+        permissions = (
+            ("show_employee", "Can show employee info"),
         )
 
 
@@ -80,6 +82,13 @@ class Customer(models.Model):
             self.email
         )
 
+    class Meta:
+        permissions = (
+            ("edit_customer_info", "Can edit info without assignment"),
+            ("assign_employee", "Can assign employee to customer"),
+            ("show_customer", "Can show customer info"),
+        )
+
 
 class Cloth(models.Model):
     name = models.CharField(max_length=50)
@@ -96,10 +105,13 @@ class Cloth(models.Model):
     def __str__(self):
         return str(self.pk) + " " + self.name
 
+    class Meta:
+        permissions = (
+            ("show_cloth", "Can show cloth"),
+        )
+
 
 class Contract(models.Model):
-    # TODO
-    # Aspon 1 oblecenie
     total_cost = models.IntegerField()
     city = models.CharField(max_length=150)
     street_number = models.PositiveSmallIntegerField()
@@ -111,6 +123,11 @@ class Contract(models.Model):
     def __str__(self):
         return str(self.pk)
 
+    class Meta:
+        permissions = (
+            ("show_contract", "Can show contract info"),
+        )
+
 
 class Meeting(models.Model):
     description = models.TextField()
@@ -119,6 +136,11 @@ class Meeting(models.Model):
 
     def __str__(self):
         return str(self.pk) 
+
+    class Meta:
+        permissions = (
+            ("show_meeting", "Can show meeting info"),
+        )
 
 
 class Contain(models.Model):

@@ -1,5 +1,9 @@
 from django.conf.urls import url, include
 from . import views
+from . import groups_manager
+
+
+groups_manager.main()
 
 
 urlpatterns = [
