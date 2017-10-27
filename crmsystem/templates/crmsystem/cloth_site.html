@@ -6,14 +6,13 @@
     changeClass("cloth_nav");
 </script>
 
-<h3>Značky</h3>
-
-<div class="col-md-12">
 <a class="btn btn-primary btn-lg btn-block" href="{% url 'mark_new' %}">
     <i class="material-icons" style="font-size:48px; color:white;">add</i>
 </a>
+
 <div class="top-space-small"></div>
 
+<div class="col-md-12">
 <div id="accordion" role="tablist">
     {% for mark in marks %}
     <div class="card">
@@ -35,12 +34,12 @@
                 <div class="card">
                     <div class="card-header" role="tab" id="headingOne">
                     <h5 class="mb-0">
-                        <a class="collapsed" data-toggle="collapse" href="#{{ cloth }}{{ mark }}" aria-expanded="false" aria-controls="collapseOne">
+                        <a class="collapsed" data-toggle="collapse" href="#{{ cloth.pk }}{{ mark }}" aria-expanded="false" aria-controls="collapseOne">
                             {{ cloth.getName }}
                         </a>
                     </h5>
                     </div>
-                    <div id="{{ cloth }}{{ mark }}" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion{{ mark }}">
+                    <div id="{{ cloth.pk }}{{ mark }}" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion{{ mark }}">
                     <div class="card-body">
                         Farba: {{ cloth.color }} <br>
                         Veľkosť: {{ cloth.size }} <br>

@@ -63,15 +63,27 @@ class ContractForm(forms.ModelForm):
         fields = [
             'city', 'street_number', 'street_name',
             'account_iban_number',
-            'employee', 'customer'
+            'employee', 'customer',
         ]
+
+
+class ContainForm(forms.ModelForm):
+    class Meta:
+        model = Contain
+        fields = [
+            'num_of_pieces', 'cloth',
+        ]
+        labels = {
+            'num_of_pieces': 'Počet kusov',
+            'cloth': 'Oblečenie',
+        }
 
 
 class MeetingForm(forms.ModelForm):
     class Meta:
         model = Meeting
         fields = [
-            'customer', 'description', 'employee'
+            'customer', 'description', 'employee',
         ]
 
 
@@ -91,16 +103,16 @@ class Legal_personForm(forms.ModelForm):
         }
 
 
-class CustomerForm(forms.Form):
+class CustomerForm(forms.ModelForm):
     error_messages = {
         'email_exist': ("This email address already exist")
     }
 
-    first_name = forms.CharField(
+    name = forms.CharField(
         label='Meno',
         max_length=150
     )
-    last_name = forms.CharField(
+    surname = forms.CharField(
         label='Priezvisko',
         max_length=150
     )
@@ -123,12 +135,6 @@ class CustomerForm(forms.Form):
         ],
         help_text='Podporovaný formár: mm.dd.yy, mm.dd.yyyy, mm-dd-yy, mm-dd-yyyy'
     )
-    city_name = forms.CharField(
-        label='Mesto'
-    )
-    street_name = forms.CharField(
-        label='Ulica'
-    )
     street_number = forms.IntegerField(
         label='Číslo ulice',
         min_value=0,
@@ -142,6 +148,17 @@ class CustomerForm(forms.Form):
                 code='email_exist',
             )
         return my_email
+    
+    class Meta:
+        model = Customer
+        fields = [
+            'email', 'name', 'surname', 'city', 'street_number',
+            'street_name', 'telephone_number', 'employee'
+        ]
+        labels = {
+            'city': 'Mesto',
+            'street_name': 'Ulica',
+        }
 
 
 class RegistrationForm(forms.Form):

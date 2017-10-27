@@ -11,14 +11,73 @@ def default_web(request):
     return render(request, 'crmsystem/main.html', {})
 
 def contract_site(request):
-    return render(request, 'crmsystem/contract_site.html', {})
+    contract_list = Contract.objects.all()
+    return render(
+        request,
+        'crmsystem/contract_site.html',
+        {
+            'list': contract_list,
+        }
+    )
 
 def contract_new(request):
+    def checkProductList():
+        pass
+
     state = "Vytvoriť novú zmluvu"
+    nop_name = 'num_of_pieces'
+    cloth_name = 'cloth'
+    delimiter = '__'
+
     if (request.method == "POST"):
-        form = ContractForm(request.POST)
-        if (form.is_valid()):
-            mark = form.save(commit=False)
+        # Debug POST
+        print(request.POST)
+
+        contract_form = ContractForm(request.POST)
+        form_list = []
+
+        # Add new product
+        if ('add_product' in request.POST):
+            product_dict = {}
+
+            # Filter keys from POST
+            for key, value in request.POST.items():
+                if ((nop_name in key) or (cloth_name in key)):
+                    product_dict.update({
+                        key: value
+                    })
+
+            # Get maximum index
+            maximum = max(
+                [int(key.split(delimiter)[1]) for key in product_dict]
+            )
+
+            all_valid = True
+
+            # Create dictionaries for forms
+            #product_list = []
+            for i in range(0, maximum + 1):
+                form_dict = {
+                    nop_name: request.POST[nop_name + delimiter + str(i)],
+                    cloth_name: request.POST[cloth_name + delimiter + str(i)],
+                }
+                new_containform = ContainForm(form_dict)
+                form_list.append(
+                    (new_containform, i, int(form_dict[cloth_name]) if (form_dict[cloth_name]) else 0)
+                )
+
+                print(form_dict[cloth_name])
+
+                if (not new_containform.is_valid()):
+                    all_valid = False
+                    print("ERROR: " + str(i))
+
+            if (all_valid):
+                form_list.append((ContainForm(), maximum + 1, 0))
+
+        '''
+        if (contract_form.is_valid()):
+            mark = contract_form.save(commit=False)
 
             # Tu vypocitat celkovu sumu kontraktu
             # podla typu a poctu kusov oblecenia
@@ -26,19 +85,27 @@ def contract_new(request):
 
             mark.save()
             return redirect('contract_site')
-        else:
-            state = 'Invalid input data'
+        '''
     else:
-        form = ContractForm()
+        contract_form = ContractForm()
+        form_list = [
+            (ContainForm(), 0, 0),
+        ]
 
     return render(
         request,
         'crmsystem/contract_new.html',
         {
-            'form': form,
+            'form_1': contract_form,
+            'form_list': form_list,
             'state': state,
         }
     )
+
+def contract_delete(request, pk):
+    contract_object = get_object_or_404(Contract, pk=pk)
+    contract_object.delete()
+    return redirect('contract_site')
 
 def meeting_site(request):
     mtg_list = Meeting.objects.all()
@@ -90,26 +157,23 @@ def customer_edit(request, pk):
     return render(request, 'crmsystem/customer_detail.html', {'pk': pk})
 
 def customer_new(request):
-    def createCustomer(form):
-        # TODO
-        # employee_id
+    def createCustomer(form, legal_person_id):
         return Customer(
             email=form.cleaned_data.get('email'),
-            city=form.cleaned_data.get('city_name'),
+            name=form.cleaned_data.get('name'),
+            surname=form.cleaned_data.get('surname'),
+            city=form.cleaned_data.get('city'),
             street_number=form.cleaned_data.get('street_number'),
             street_name=form.cleaned_data.get('street_name'),
             telephone_number=form.cleaned_data.get('telephone_number'),
-            employee_id=1
+            employee=form.cleaned_data.get('employee'),
+            legal_person_id=legal_person_id
         )
 
-    def createLegalPerson(form, customer):
-        # TODO
-        # domysliet psychical_person column
+    def createLegalPerson(form):
         return Legal_person(
             ico=form.cleaned_data.get('ico'),
             name=form.cleaned_data.get('name'),
-            customer=customer,
-            physical_person_id=1
         )
 
     state = 'Nový zákaznik'
@@ -122,17 +186,15 @@ def customer_new(request):
         if ('legalperson' in request.POST):
             checked = True
             if (form_1.is_valid() and form_2.is_valid()):
-                customer = createCustomer(form_1)
-                legal_person = createLegalPerson(form_2, customer)
-                customer.save()
+                legal_person = createLegalPerson(form_2)
+                customer = createCustomer(form_1, legal_person.pk)
                 legal_person.save()
+                customer.save()
                 return redirect('customer_site')
         else:
             if (form_1.is_valid()):
-                createCustomer(form_1).save()
+                createCustomer(form_1, '').save()
                 return redirect('customer_site')
-
-        state = "Invalid input data"
     else:
         form_1 = CustomerForm()
         form_2 = Legal_personForm()
@@ -181,7 +243,16 @@ def employee_new(request):
     )
 
 def employee_edit(request, pk):
-    return render(request, 'crmsystem/employee_detail.html', {'pk': pk})
+    employee_object = get_object_or_404(Employee, pk=pk)
+    if (request.method == "POST"):
+        form = EmployeeForm(request.POST, instance=employee_object)
+        if (form.is_valid()):
+            form.save()
+            return redirect('employee_site')
+    else:
+        form = EmployeeForm(instance=employee_object)
+
+    return render(request, 'crmsystem/employee_new.html', {'form': form})
 
 def cloth_site(request):
     marks = Mark.objects.all().order_by('name_of_mark')

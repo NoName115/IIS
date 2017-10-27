@@ -48,6 +48,7 @@ class Employee(models.Model):
             self.title + " " + self.name + " " + self.surname
         )
 
+
 class Legal_person(models.Model):
     ico = models.CharField(primary_key=True, max_length=50)
     name = models.CharField(max_length=50)
@@ -55,10 +56,8 @@ class Legal_person(models.Model):
     def __str__(self):
         return self.ico
 
-class Customer(models.Model):
-    # TODO
-    # Kontrola telefonneho cisla
 
+class Customer(models.Model):
     email = models.EmailField(primary_key=True)
     name = models.CharField(max_length=30)
     surname = models.CharField(max_length=30)
@@ -66,8 +65,15 @@ class Customer(models.Model):
     street_number = models.PositiveSmallIntegerField()
     street_name = models.CharField(max_length=150)
     telephone_number = models.CharField(max_length=50)
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    legal_person = models.ForeignKey(Legal_person, on_delete=models.CASCADE)
+    employee = models.ForeignKey(
+        Employee,
+        on_delete=models.CASCADE
+    )
+    legal_person = models.ForeignKey(
+        Legal_person,
+        on_delete=models.CASCADE,
+        null=True
+    )
 
     def __str__(self):
         return (
@@ -88,16 +94,12 @@ class Cloth(models.Model):
         return self.name + " - " + str(self.size)
 
     def __str__(self):
-        return self.name
+        return str(self.pk) + " " + self.name
 
 
 class Contract(models.Model):
     # TODO
-    # Aspon 1 oblecenie, kontrola cisla uctu
-
-    # Tu nemoze byt pocet kusov, to sa vztahuje na oblecenie nie na zmluvu !!!!
-    #number_of_pieces = models.IntegerField()
-
+    # Aspon 1 oblecenie
     total_cost = models.IntegerField()
     city = models.CharField(max_length=150)
     street_number = models.PositiveSmallIntegerField()
@@ -105,7 +107,6 @@ class Contract(models.Model):
     account_iban_number = models.CharField(max_length=40)
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-
 
     def __str__(self):
         return str(self.pk)
@@ -121,6 +122,13 @@ class Meeting(models.Model):
 
 
 class Contain(models.Model):
-    num_of_pieces = models.IntegerField()
+    num_of_pieces = models.PositiveSmallIntegerField()
     contract = models.ForeignKey(Contract, on_delete=models.CASCADE)
     cloth = models.ForeignKey(Cloth, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return (
+            str(self.contract.pk) + " " + self.cloth.name +
+            " " + self.cloth.mark.name_of_mark +
+            " - " + str(self.num_of_pieces)
+        )

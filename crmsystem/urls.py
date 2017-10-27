@@ -14,6 +14,7 @@ urlpatterns = [
     # Other pages
     url(r'^contract/$', views.contract_site, name='contract_site'),
     url(r'^contract/new/$', views.contract_new, name='contract_new'),
+    url(r'^contract/(?P<pk>\d+)/delete$', views.contract_delete, name='contract_delete'),
     url(r'^meeting/$', views.meeting_site, name='meeting_site'),
     url(r'^meeting/new/$', views.meeting_new, name='meeting_new'),
     url(r'^customer/$', views.customer_site, name='customer_site'),

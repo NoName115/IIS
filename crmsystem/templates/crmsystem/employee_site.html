@@ -21,6 +21,10 @@
             <a class="collapsed" data-toggle="collapse" href="#collapse{{ employee.pk }}" aria-expanded="false" aria-controls="collapseOne">
                 {{ employee.title }} {{ employee.name }} {{ employee.surname }}
             </a>
+            <!-- Permission na Can Edit Employee-->
+            <a class="btn btn-primary float-sm-right btn-sm" href="{% url 'employee_edit' pk=employee.pk %}" role="button">
+                <i class="material-icons" style="font-size:18px; color:white;">mode_edit</i>
+            </a>
         </h5>
         </div>
         <div id="collapse{{ employee.pk }}" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
