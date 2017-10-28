@@ -81,7 +81,7 @@ class ContractForm(forms.ModelForm):
         fields = [
             'city', 'street_number', 'street_name',
             'account_iban_number',
-            'employee', 'customer',
+            'customer',
         ]
 
 
@@ -101,7 +101,7 @@ class MeetingForm(forms.ModelForm):
     class Meta:
         model = Meeting
         fields = [
-            'customer', 'description', 'employee',
+            'customer', 'description',
         ]
 
 

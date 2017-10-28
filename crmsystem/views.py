@@ -13,7 +13,10 @@ def default_web(request):
 def no_permission(request):
     return render(request, 'account/no_permission.html', {})
 
-#@permission_required('show_contract', login_url='/accounts/nopermission/')
+@permission_required(
+    'crmsystem.show_contract',
+    login_url='/accounts/nopermission/'
+)
 def contract_site(request):
     contract_list = Contract.objects.all()
     return render(
@@ -24,7 +27,10 @@ def contract_site(request):
         }
     )
 
-#@permission_required('add_contract', login_url='/accounts/nopermission/')
+@permission_required(
+    'crmsystem.add_contract',
+    login_url='/accounts/nopermission/'
+)
 def contract_new(request):
     def is_productlist_ok(request_post):
         keys_dict = {}
@@ -42,8 +48,6 @@ def contract_new(request):
         maximum = max(
             [int(key.split(delimiter)[1]) for key in keys_dict]
         )
-
-        print(maximum)
 
         # Create dictionaries for forms
         for i in range(0, maximum + 1):
@@ -83,7 +87,6 @@ def contract_new(request):
             show_validation = False
             product_dict = is_productlist_ok(request.POST)
             product_dict['form_list'] = product_dict['form_list'][:-1]
-
         # Add new product
         elif ('add_product' in request.POST):
             show_validation = False
@@ -110,6 +113,11 @@ def contract_new(request):
                     total_price += float(contain.cloth.cost_of_piece)
                     contain_list.append(contain)
 
+                print(request.user)
+
+                contract.employee = Employee.objects.filter(
+                    user_account=request.user
+                )[0]
                 contract.total_cost = total_price
                 contract.save()
 
@@ -137,11 +145,19 @@ def contract_new(request):
         }
     )
 
+@permission_required(
+    'crmsystem.delete_contract',
+    login_url='/accounts/nopermission/'
+)
 def contract_delete(request, pk):
     contract_object = get_object_or_404(Contract, pk=pk)
     contract_object.delete()
     return redirect('contract_site')
 
+@permission_required(
+    'crmsystem.show_meeting',
+    login_url='/accounts/nopermission/'
+)
 def meeting_site(request):
     mtg_list = Meeting.objects.all()
     return render(
@@ -152,16 +168,22 @@ def meeting_site(request):
         }
     )
 
+@permission_required(
+    'crmsystem.add_meeting',
+    login_url='/accounts/nopermission/'
+)
 def meeting_new(request):
-    state = "Create new meeting"
+    state = "Nové stretnutie"
+
     if (request.method == "POST"):
         form = MeetingForm(request.POST)
         if (form.is_valid()):
             mtg = form.save(commit=False)
+            mtg.employee = Employee.objects.filter(
+                    user_account=request.user
+            )[0]
             mtg.save()
             return redirect('meeting_site')
-        else:
-            state = "Invalid input data"
     else:
         form = MeetingForm()
 
@@ -174,6 +196,10 @@ def meeting_new(request):
         }
     )
 
+@permission_required(
+    'crmsystem.show_customer',
+    login_url='/accounts/nopermission/'
+)
 def customer_site(request):
     all_customers = Customer.objects.all()
     customer_list = [
@@ -188,9 +214,17 @@ def customer_site(request):
         }
     )
 
+@permission_required(
+    'crmsystem.change_customer',
+    login_url='/accounts/nopermission/'
+)
 def customer_edit(request, pk):
     return render(request, 'crmsystem/customer_detail.html', {'pk': pk})
 
+@permission_required(
+    'crmsystem.add_customer',
+    login_url='/accounts/nopermission/'
+)
 def customer_new(request):
     def createCustomer(form, legal_person_id):
         return Customer(
@@ -245,6 +279,10 @@ def customer_new(request):
         }
     )
 
+@permission_required(
+    'crmsystem.show_employee',
+    login_url='/accounts/nopermission/'
+)
 def employee_site(request):
     employee_list = Employee.objects.all()
     return render(
@@ -255,6 +293,10 @@ def employee_site(request):
         }
     )
 
+@permission_required(
+    'crmsystem.add_employee',
+    login_url='/accounts/nopermission/'
+)
 def employee_new(request):
     # TODO
     # Vyber znaciek dorobit
@@ -288,6 +330,10 @@ def employee_new(request):
         }
     )
 
+@permission_required(
+    'crmsystem.change_employee',
+    login_url='/accounts/nopermission/'
+)
 def employee_edit(request, pk):
     employee_object = get_object_or_404(Employee, pk=pk)
     if (request.method == "POST"):
@@ -300,6 +346,10 @@ def employee_edit(request, pk):
 
     return render(request, 'crmsystem/employee_new.html', {'form': form})
 
+@permission_required(
+    'crmsystem.show_cloth',
+    login_url='/accounts/nopermission/'
+)
 def cloth_site(request):
     marks = Mark.objects.all().order_by('name_of_mark')
     clothes = Cloth.objects.all().order_by('name')
@@ -312,6 +362,10 @@ def cloth_site(request):
         }
     )
 
+@permission_required(
+    'crmsystem.add_cloth',
+    login_url='/accounts/nopermission/'
+)
 def cloth_new(request, pk):
     mark_object = get_object_or_404(Mark, pk=pk)
     state = "Nové oblečenie pre značku: " + mark_object.name_of_mark
@@ -335,6 +389,10 @@ def cloth_new(request, pk):
         }
     )
 
+@permission_required(
+    'crmsystem.add_mark',
+    login_url='/accounts/nopermission/'
+)
 def mark_new(request):
     state = "Register new mark"
     if (request.method == "POST"):
@@ -383,7 +441,6 @@ def logout_form(request):
     return render(request, 'account/logout.html', {})
 
 def registration_form(request):
-    # TODO
     state = 'Welcome !!!!'
     com_owner_group = 'test'
     cus_ser_group = 'test_2'

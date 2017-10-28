@@ -132,8 +132,8 @@ class Contract(models.Model):
 
 class Meeting(models.Model):
     description = models.TextField()
-    customer = models.ManyToManyField(Customer)
-    employee = models.ManyToManyField(Employee)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.pk) 

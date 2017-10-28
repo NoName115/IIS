@@ -67,13 +67,6 @@ def main():
             companyowner_group
         )
 
-    # Create one employee
-    try:
-        test = User.objects.get(username='Worker')
-    except User.DoesNotExist:
-        employee = User.objects.create_user('Worker', 'worker@vobec.nic', '123worker321')
-        employee.groups.add(employee_group)
-
     try:
         test = User.objects.get(username='Service')
     except User.DoesNotExist:

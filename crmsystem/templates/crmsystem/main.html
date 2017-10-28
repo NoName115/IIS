@@ -6,9 +6,21 @@
     changeClass("home_nav");
 </script>
 
-<h2 class="display-3">
-    Vitajte {% if user.is_authenticated %} {{ user.get_username }} {% else %} náhodny človek {% endif %}!
-</h2>
+<h3 class="display-4">
+    Vitajte
+    {% if user.is_authenticated %}
+        {% if user.groups.all.0.name == 'Employee_group' %}
+            Pracovnik
+        {% elif user.groups.all.0.name == 'Customerservice_group' %}
+            Vedúci zak. oddelenia
+        {% elif user.groups.all.0.name == 'Companyowner_group' %}
+            Majteľ firmy
+        {% endif %}
+        - {{ user.get_username }}
+    {% else %}
+        náhodny človek
+    {% endif %}!
+</h3>
 <p></p>
 
 {% if not user.is_authenticated %}
