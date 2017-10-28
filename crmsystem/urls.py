@@ -5,7 +5,6 @@ from . import groups_manager
 
 groups_manager.main()
 
-
 urlpatterns = [
     # Gome page
     url(r'^$', views.default_web, name='default_web'),
@@ -14,6 +13,7 @@ urlpatterns = [
     url(r'^accounts/login/$', views.login_form, name='login_form'),
     url(r'^accounts/registration/$', views.registration_form, name='registration_form'),
     url(r'^accounts/logout/$', views.logout_form, name='logout_form'),
+    url(r'^accounts/nopermission/$', views.no_permission, name='no_permission'),
 
     # Other pages
     url(r'^contract/$', views.contract_site, name='contract_site'),

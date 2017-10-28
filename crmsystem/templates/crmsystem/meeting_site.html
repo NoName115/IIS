@@ -6,9 +6,11 @@
     changeClass("meeting_nav");
 </script>
 
+{% if perms.crmsystem.add_meeting %}
 <a href="{% url 'meeting_new' %}" class="btn btn-primary btn-lg btn-block">
     <i class="material-icons" style="font-size:48px; color:white;">add_alert</i>
 </a>
+{% endif %}
 
 <div class="top-space-small"></div>
 

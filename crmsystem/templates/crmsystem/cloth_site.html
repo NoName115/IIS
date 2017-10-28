@@ -6,9 +6,11 @@
     changeClass("cloth_nav");
 </script>
 
+{% if perms.crmsystem.add_mark %}
 <a class="btn btn-primary btn-lg btn-block" href="{% url 'mark_new' %}">
     <i class="material-icons" style="font-size:48px; color:white;">add</i>
 </a>
+{% endif %}
 
 <div class="top-space-small"></div>
 
@@ -21,12 +23,15 @@
             <a class="collapsed" data-toggle="collapse" href="#{{ mark }}" aria-expanded="false" aria-controls="collapseOne">
                 {{ mark.name_of_mark }}
             </a>
+            {% if perms.crmsystem.add_cloth %}
             <a class="btn btn-primary float-sm-right btn-sm" href="{% url 'cloth_new' pk=mark.pk %}" role="button">
                 <i class="material-icons" style="font-size:20px; color:white;">add</i>
             </a>
+            {% endif %}
         </h5>
         </div>
         <div id="{{ mark }}" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+        {% if perms.crmsystem.show_cloth %}
         <div class="card-body">
             <div id="accordion{{ mark }}" role="tablist">
                 {% for cloth in clothes %}
@@ -52,6 +57,7 @@
                 {% endfor %}
             </div>
         </div>
+        {% endif %}
         </div>
     </div>
     {% endfor %}

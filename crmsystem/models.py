@@ -39,6 +39,7 @@ class Employee(models.Model):
     title = models.CharField(max_length=10, choices=TITLE_CHOICES)
     date_of_birth = models.DateField() 
     marks = models.ManyToManyField(Mark)
+    user_account = models.ForeignKey('auth.User')
 
     def __str__(self):
         return (

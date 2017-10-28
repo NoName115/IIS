@@ -28,11 +28,25 @@
         Tvoja pozícia je: majteľ firmy/veduci/pracovnik
         Mozes pokracovat tu: Tlacitka do ktorych sekcii ma daný uživateľ prístup
     -->
+    {% if perms.crmsystem.show_contract %}
     <a href="{% url 'contract_site' %}" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Zmluvy</a>
+    {% endif %}
+
+    {% if perms.crmsystem.show_meeting %}
     <a href="{% url 'meeting_site' %}" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Stretnutia</a>
+    {% endif %}
+
+    {% if perms.crmsystem.show_customer %}
     <a href="{% url 'customer_site' %}" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Zakaznici</a>
+    {% endif %}
+
+    {% if perms.crmsystem.show_employee %}
     <a href="{% url 'employee_site' %}" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Pracovnici</a>
+    {% endif %}
+
+    {% if perms.crmsystem.show_cloth or perms.crmsystem.show_mark %}
     <a href="{% url 'cloth_site' %}" class="btn btn-primary btn-lg btn-block" role="button" aria-pressed="true">Oblecenie</a>
+    {% endif %}
 {% endif %}
 
 {% endblock %}

@@ -6,9 +6,11 @@
     changeClass("contract_nav");
 </script>
 
+{% if perms.crmsystem.add_contract %}
 <a href="{% url 'contract_new' %}" class="btn btn-primary btn-lg btn-block">
     <i class="material-icons" style="font-size:48px; color:white;">note_add</i>
 </a>
+{% endif %}
 
 <div class="top-space-small"></div>
 
@@ -21,9 +23,11 @@
             <a class="collapsed" data-toggle="collapse" href="#collapse{{ contract.pk }}" aria-expanded="false" aria-controls="collapseOne">
                 {{ contract.employee }} - {{ contract.customer }}
             </a>
+            {% if perms.crmsystem.delete_contract %}
             <a class="btn btn-danger float-sm-right btn-sm" href="{% url 'contract_delete' pk=contract.pk %}" role="button">
                 <i class="material-icons" style="font-size:18px; color:white;">delete</i>
             </a>
+            {% endif %}
         </h5>
         </div>
         <div id="collapse{{ contract.pk }}" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">

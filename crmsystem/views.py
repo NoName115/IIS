@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import Group, User
 from django.contrib.auth import authenticate, login, logout
 
@@ -10,6 +10,10 @@ from .forms import *
 def default_web(request):
     return render(request, 'crmsystem/main.html', {})
 
+def no_permission(request):
+    return render(request, 'account/no_permission.html', {})
+
+#@permission_required('show_contract', login_url='/accounts/nopermission/')
 def contract_site(request):
     contract_list = Contract.objects.all()
     return render(
@@ -20,6 +24,7 @@ def contract_site(request):
         }
     )
 
+#@permission_required('add_contract', login_url='/accounts/nopermission/')
 def contract_new(request):
     def is_productlist_ok(request_post):
         keys_dict = {}
@@ -251,15 +256,26 @@ def employee_site(request):
     )
 
 def employee_new(request):
-    state = "Register new employee"
+    # TODO
+    # Vyber znaciek dorobit
+    state = "Nový zamestnanec"
+
     if (request.method == "POST"):
         form = EmployeeForm(request.POST)
         if (form.is_valid()):
+            # Create new user
+            username = request.POST['username']
+            employee_user = User.objects.create_user(
+                username,
+                username + '@vobec.nic',
+                '123' + username.lower() + '321'
+            )
+            employee_user.groups.add(Group.objects.get(name='Employee_group'))
+
             employee = form.save(commit=False)
+            employee.user_account = employee_user
             employee.save()
             return redirect('employee_site')
-        else:
-            state = 'Invalid input data'
     else:
         form = EmployeeForm()
 

@@ -1,13 +1,20 @@
-from django import forms
 from django.contrib.auth import password_validation
+from django.contrib.auth.models import User
+from django import forms
+
 from .models import *
 
 
 class EmployeeForm(forms.ModelForm):
+    error_messages = {
+        'username_exists': ("Toto užívateľske meno už existuje")
+    }
+
     class Meta:
         model = Employee
         fields = [
-            'username','name', 'surname', 'title', 'date_of_birth', 'marks'
+            'username', 'name', 'surname',
+            'title', 'date_of_birth', 'marks'
         ]
         labels = {
             'username': 'Login',
@@ -17,6 +24,17 @@ class EmployeeForm(forms.ModelForm):
             'date_of_birth': 'Datum narodenia',
             'marks': 'Znacky'
         }
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        try:
+            new_user = User.objects.get(username=username)
+            raise forms.ValidationError(
+                self.error_messages['username_exists'],
+                code='username_exists',
+            )
+        except User.DoesNotExist:
+            return username
 
 
 class MarkForm(forms.ModelForm):

@@ -6,9 +6,11 @@
     changeClass("customer_nav");
 </script>
 
+{% if perms.crmsystem.add_customer %}
 <a href="{% url 'customer_new' %}" class="btn btn-primary btn-lg btn-block">
     <i class="material-icons" style="font-size:48px; color:white;">person_add</i>
 </a>
+{% endif %}
 
 <div class="top-space-small"></div>
 

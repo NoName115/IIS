@@ -16,7 +16,7 @@
     <div class="form-group">
         {{ field.label_tag }}
 
-        {% if form.is_bound and show_validation %}
+        {% if form.is_bound and show_validation != False %}
             {% if field.errors %}
                 {% render_field field class="form-control is-invalid" %}
                 {% for error in field.errors %}
