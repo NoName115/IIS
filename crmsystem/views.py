@@ -81,6 +81,10 @@ def contract_new(request):
     delimiter = '__'
     show_validation = True
 
+    loggged_employee = Employee.objects.filter(
+        user_account=request.user
+    )[0]
+
     if (request.method == "POST"):
         contract_form = ContractForm(request.POST)
 
@@ -112,12 +116,14 @@ def contract_new(request):
                 contain_list = []
                 for product_tuple in product_dict['form_list']:
                     contain = product_tuple[0].save(commit=False)
-                    total_price += float(contain.cloth.cost_of_piece)
+                    total_price += float(
+                        contain.cloth.cost_of_piece
+                    ) * int(
+                        product_tuple[0].cleaned_data.get('num_of_pieces')
+                    )
                     contain_list.append(contain)
 
-                contract.employee = Employee.objects.filter(
-                    user_account=request.user
-                )[0]
+                contract.employee = loggged_employee
                 contract.total_cost = total_price
                 contract.save()
 
@@ -134,6 +140,15 @@ def contract_new(request):
             (ContainForm(), 0, 0),
         ]
 
+    # Clothes from employee
+    emp_marks_id = {
+        mark['id']
+        for mark in get_object_or_404(
+            Employee,
+            pk=loggged_employee.pk
+        ).marks.values()
+    }
+
     return render(
         request,
         'crmsystem/contract_new.html',
@@ -142,6 +157,7 @@ def contract_new(request):
             'form_list': form_list,
             'state': state,
             'show_validation': show_validation,
+            'emp_marks_id': emp_marks_id,
         }
     )
 

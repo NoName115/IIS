@@ -85,7 +85,6 @@ class Customer(models.Model):
 
     class Meta:
         permissions = (
-            #("edit_customer_info", "Can edit info without assignment"),
             ("show_customer", "Can show customer info"),
         )
 
@@ -97,7 +96,6 @@ class Cloth(models.Model):
     size = models.PositiveSmallIntegerField()
     cost_of_piece = models.DecimalField(decimal_places=2, max_digits=12)
     mark = models.ForeignKey(Mark, on_delete=models.CASCADE)
-    #image_of_cloth = models.ImageField(upload_to=None, height_field=None, width_field=None, max_length=100, null=True)
 
     def getName(self):
         return self.name + " - " + str(self.size)
@@ -112,7 +110,7 @@ class Cloth(models.Model):
 
 
 class Contract(models.Model):
-    total_cost = models.IntegerField()
+    total_cost = models.DecimalField(decimal_places=2, max_digits=12)
     city = models.CharField(max_length=150)
     street_number = models.PositiveSmallIntegerField()
     street_name = models.CharField(max_length=150)
@@ -127,7 +125,6 @@ class Contract(models.Model):
         permissions = (
             ("show_contract", "Can show contract info"),
         )
-
 
 class Meeting(models.Model):
     description = models.TextField()

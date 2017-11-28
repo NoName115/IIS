@@ -13,15 +13,17 @@
     <div class="form-row">
         <div class="form-group col-md-8">
             <select name="cloth__{{ contain.1 }}" placeholder="Oblečenie" required class="form-control" id="id_cloth__{{ contain.1 }}">
-                {% for id, name in contain.0.cloth.field.choices %}
-                    <option value="{{ id }}"
-                    {% if forloop.first and contain.2 == 0 %}
-                        selected="selected"
-                    {% elif id == contain.2 %}
-                        selected="selected"
-                    {% endif %}>
-                        {{ name }}
-                    </option>
+                {% for cloth_object in contain.0.cloth.field.choices.queryset %}
+                    {% if cloth_object.mark.pk in emp_marks_id %}
+                        <option value="{{ cloth_object.pk }}"
+                        {% if forloop.first and contain.2 == 0 %}
+                            selected="selected"
+                        {% elif cloth_object.pk == contain.2 %}
+                            selected="selected"
+                        {% endif %}>
+                            {{ cloth_object }}
+                        </option>
+                    {% endif %}
                 {% endfor %}
             </select>
         </div>
