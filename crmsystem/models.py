@@ -54,7 +54,7 @@ class Employee(models.Model):
 
 class Legal_person(models.Model):
     ico = models.CharField(primary_key=True, max_length=50)
-    name = models.CharField(max_length=50)
+    company_name = models.CharField(max_length=50)
 
     def __str__(self):
         return self.ico
@@ -75,6 +75,8 @@ class Customer(models.Model):
     legal_person = models.ForeignKey(
         Legal_person,
         on_delete=models.CASCADE,
+        default=None,
+        blank=True,
         null=True
     )
 
@@ -85,8 +87,7 @@ class Customer(models.Model):
 
     class Meta:
         permissions = (
-            ("edit_customer_info", "Can edit info without assignment"),
-            ("assign_employee", "Can assign employee to customer"),
+            #("edit_customer_info", "Can edit info without assignment"),
             ("show_customer", "Can show customer info"),
         )
 

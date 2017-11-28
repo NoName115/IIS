@@ -23,6 +23,11 @@
             <a class="collapsed" data-toggle="collapse" href="#collapse{{ customer.1 }}" aria-expanded="false" aria-controls="collapseOne">
                 {{ customer.0.email }}
             </a>
+            {% if perms.crmsystem.change_customer or perms.crmsystem.edit_customer_info %}
+            <a class="btn btn-primary float-sm-right btn-sm" href="{% url 'customer_edit' pk=customer.0.pk %}" role="button">
+                <i class="material-icons" style="font-size:18px; color:white;">mode_edit</i>
+            </a>
+            {% endif %}
         </h5>
         </div>
         <div id="collapse{{ customer.1 }}" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">

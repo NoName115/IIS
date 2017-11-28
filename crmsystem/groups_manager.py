@@ -34,7 +34,8 @@ def main():
     if (employee_created):
         assign_permissions(
             [
-                'edit_customer_info', 'show_customer',
+                #'edit_customer_info',
+                'show_customer',
                 'show_mark', 'show_cloth',
                 'add_contract', 'delete_contract', 'show_contract',
                 'add_meeting', 'show_meeting',
@@ -47,7 +48,7 @@ def main():
             [
                 'add_employee', 'change_employee', 'show_employee',
                 'add_mark',
-                'show_customer', 'add_customer', 'assign_employee',
+                'show_customer', 'add_customer', 'change_customer'
                 'show_mark', 'add_mark',
                 'show_cloth', 'add_cloth',
             ],

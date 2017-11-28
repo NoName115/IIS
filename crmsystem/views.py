@@ -214,19 +214,84 @@ def customer_site(request):
         }
     )
 
+
 @permission_required(
     'crmsystem.change_customer',
     login_url='/accounts/nopermission/'
 )
 def customer_edit(request, pk):
-    return render(request, 'crmsystem/customer_detail.html', {'pk': pk})
+    customer_object = get_object_or_404(Customer, pk=pk)
+
+    contain_legalperson = False
+    if (not customer_object.legal_person_id is None):
+        legalperson_object = get_object_or_404(
+            Legal_person,
+            pk=customer_object.legal_person.pk
+        )
+        contain_legalperson = True
+
+    state = "Úprava zákaznika"
+    isEmployee = False
+    # Check if user is Employee or Service
+    isEmployee = request.user.groups.filter(
+        name='Employee_group'
+    ).exists()
+
+    if (request.method == "POST"):
+        form_1 = CustomerForm(request.POST, instance=customer_object)
+
+        if (isEmployee):
+            # Remove employee field assign from form_1
+            form_1.fields.pop('employee')
+
+        # Form is valid, # Only one error, email exist
+        if ('email' in form_1.errors and len(form_1.errors) == 1):
+            customer_object.name = form_1.cleaned_data.get('name')
+            customer_object.surname = form_1.cleaned_data.get('surname')
+            customer_object.city = form_1.cleaned_data.get('city')
+            customer_object.street_number = form_1.cleaned_data.get('street_number')
+            customer_object.street_name = form_1.cleaned_data.get('street_name')
+            customer_object.telephone_number = form_1.cleaned_data.get('telephone_number')
+            if (not isEmployee and 'employee' in request.POST):
+                customer_object.employee = form_1.cleaned_data.get('employee')
+
+            customer_object.save()
+            return redirect('customer_site')
+    else:
+        form_1 = CustomerForm(instance=customer_object)
+        if (isEmployee):
+            form_1.fields.pop('employee')
+
+    if (contain_legalperson):
+        form_2 = Legal_personForm(instance=legalperson_object)
+
+    # Remove pk(email) from form_1
+    form_1.fields.pop('email')
+
+    # Create dictionary for html
+    out_dict = {
+        'form_1': form_1,
+        'state': state,
+    }
+    if (contain_legalperson):
+        out_dict.update({
+            'form_2': form_2,
+            'editable': True,
+            'locked': True,
+        })
+
+    return render(
+        request,
+        'crmsystem/customer_new.html',
+        out_dict
+    )
 
 @permission_required(
     'crmsystem.add_customer',
     login_url='/accounts/nopermission/'
 )
 def customer_new(request):
-    def createCustomer(form, legal_person_id):
+    def createCustomer(form, legal_person):
         return Customer(
             email=form.cleaned_data.get('email'),
             name=form.cleaned_data.get('name'),
@@ -236,13 +301,13 @@ def customer_new(request):
             street_name=form.cleaned_data.get('street_name'),
             telephone_number=form.cleaned_data.get('telephone_number'),
             employee=form.cleaned_data.get('employee'),
-            legal_person_id=legal_person_id
+            legal_person=legal_person
         )
 
     def createLegalPerson(form):
         return Legal_person(
             ico=form.cleaned_data.get('ico'),
-            name=form.cleaned_data.get('name'),
+            company_name=form.cleaned_data.get('company_name'),
         )
 
     state = 'Nový zákaznik'
@@ -256,13 +321,13 @@ def customer_new(request):
             checked = True
             if (form_1.is_valid() and form_2.is_valid()):
                 legal_person = createLegalPerson(form_2)
-                customer = createCustomer(form_1, legal_person.pk)
+                customer = createCustomer(form_1, legal_person)
                 legal_person.save()
                 customer.save()
                 return redirect('customer_site')
         else:
             if (form_1.is_valid()):
-                createCustomer(form_1, '').save()
+                createCustomer(form_1, None).save()
                 return redirect('customer_site')
     else:
         form_1 = CustomerForm()

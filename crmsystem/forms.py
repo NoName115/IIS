@@ -114,17 +114,19 @@ class Legal_personForm(forms.ModelForm):
     class Meta:
         model = Legal_person
         fields = [
-            'ico', 'name',
+            'ico', 'company_name',
         ]
         labels = {
-            'name': 'Meno',
+            'company_name': 'Meno firmy',
         }
 
 
 class CustomerForm(forms.ModelForm):
+    '''
     error_messages = {
         'email_exist': ("This email address already exist")
     }
+    '''
 
     name = forms.CharField(
         label='Meno',
@@ -143,6 +145,7 @@ class CustomerForm(forms.ModelForm):
         regex=r'^(\+|00)([0-9,\-]+) ([0-9,\-, ]{1,})$',
         help_text='Formát čísla (+/00)country_code number',
     )
+    '''
     date_of_birth = forms.DateField(
         label='Dátum narodenia',
         input_formats=[
@@ -153,11 +156,13 @@ class CustomerForm(forms.ModelForm):
         ],
         help_text='Podporovaný formár: mm.dd.yy, mm.dd.yyyy, mm-dd-yy, mm-dd-yyyy'
     )
+    '''
     street_number = forms.IntegerField(
         label='Číslo ulice',
         min_value=0,
     )
 
+    '''
     def clean_email(self):
         my_email = self.cleaned_data.get('email')
         if (Customer.objects.filter(email=my_email)):
@@ -166,7 +171,8 @@ class CustomerForm(forms.ModelForm):
                 code='email_exist',
             )
         return my_email
-    
+    '''
+
     class Meta:
         model = Customer
         fields = [
