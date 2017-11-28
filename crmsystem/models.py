@@ -20,8 +20,6 @@ class Mark(models.Model):
     designer_name = models.CharField(max_length=30)
     designer_surname = models.CharField(max_length=30)
     name_of_mark = models.CharField(max_length=30)
-    #Get Pillow at https://pypi.python.org/pypi/Pillow or run command "pip install Pillow".
-    #logo_of_mark = models.ImageField(upload_to=None, height_field=None, width_field=None, max_length=100)
 
     def __str__(self):
         return str(self.pk) + self.name_of_mark

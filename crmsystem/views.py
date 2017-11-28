@@ -6,6 +6,8 @@ from django.contrib.auth import authenticate, login, logout
 from .models import *
 from .forms import *
 
+import re
+
 
 def default_web(request):
     return render(request, 'crmsystem/main.html', {})
@@ -112,8 +114,6 @@ def contract_new(request):
                     contain = product_tuple[0].save(commit=False)
                     total_price += float(contain.cloth.cost_of_piece)
                     contain_list.append(contain)
-
-                print(request.user)
 
                 contract.employee = Employee.objects.filter(
                     user_account=request.user
@@ -363,13 +363,29 @@ def employee_site(request):
     login_url='/accounts/nopermission/'
 )
 def employee_new(request):
-    # TODO
-    # Vyber znaciek dorobit
-    state = "Nový zamestnanec"
+    all_marks = Mark.objects.all()
+    mark_dict = {}
+    for mark in all_marks:
+        mark_dict.update({
+            mark.pk: [mark.pk, mark.name_of_mark, False]
+        })
 
     if (request.method == "POST"):
         form = EmployeeForm(request.POST)
+
+        # Resolve marks
+        for key in request.POST:
+            if (key.find('checkbox') != -1):
+                mark_indx = re.search(r'\d+', key).group()
+                mark_dict[int(mark_indx)][2] = True
+
         if (form.is_valid()):
+            # Get True marks
+            true_marks = []
+            for mark_id, mark_tuple in mark_dict.items():
+                if (mark_tuple[2]):
+                    true_marks.append(str(mark_id))
+
             # Create new user
             username = request.POST['username']
             employee_user = User.objects.create_user(
@@ -382,6 +398,9 @@ def employee_new(request):
             employee = form.save(commit=False)
             employee.user_account = employee_user
             employee.save()
+
+            # Assign marks, must be after save
+            employee.marks = true_marks
             return redirect('employee_site')
     else:
         form = EmployeeForm()
@@ -391,7 +410,8 @@ def employee_new(request):
         'crmsystem/employee_new.html',
         {
             'form': form,
-            'state': state,
+            'state': "Nový zamestnanec",
+            'mark_dict': mark_dict,
         }
     )
 
@@ -401,15 +421,50 @@ def employee_new(request):
 )
 def employee_edit(request, pk):
     employee_object = get_object_or_404(Employee, pk=pk)
+
+    all_marks = Mark.objects.all()
+    mark_dict = {}
+    for mark in all_marks:
+        mark_dict.update({
+            mark.pk: [mark.pk, mark.name_of_mark, False]
+        })
+
     if (request.method == "POST"):
         form = EmployeeForm(request.POST, instance=employee_object)
+        form.fields.pop('username')
+
+        # Resolve marks
+        for key in request.POST:
+            if (key.find('checkbox') != -1):
+                mark_indx = re.search(r'\d+', key).group()
+                mark_dict[int(mark_indx)][2] = True
+
         if (form.is_valid()):
-            form.save()
+            # Get True marks
+            true_marks = []
+            for mark_id, mark_tuple in mark_dict.items():
+                if (mark_tuple[2]):
+                    true_marks.append(str(mark_id))
+
+            employee = form.save()
+            # Assign marks, must be after save
+            employee.marks = true_marks
             return redirect('employee_site')
     else:
         form = EmployeeForm(instance=employee_object)
+        form.fields.pop('username')
+        for mark in employee_object.marks.values('id'):
+            mark_dict[mark['id']][2] = True
 
-    return render(request, 'crmsystem/employee_new.html', {'form': form})
+    return render(
+        request,
+        'crmsystem/employee_new.html',
+        {
+            'form': form,
+            'state': "Úprava zamestnanca: " + employee_object.username,
+            'mark_dict': mark_dict,
+        }
+    )
 
 @permission_required(
     'crmsystem.show_cloth',

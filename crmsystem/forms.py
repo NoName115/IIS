@@ -14,7 +14,7 @@ class EmployeeForm(forms.ModelForm):
         model = Employee
         fields = [
             'username', 'name', 'surname',
-            'title', 'date_of_birth', 'marks'
+            'title', 'date_of_birth',
         ]
         labels = {
             'username': 'Login',
@@ -22,7 +22,6 @@ class EmployeeForm(forms.ModelForm):
             'surname': 'Priezvisko',
             'title': 'Titul',
             'date_of_birth': 'Datum narodenia',
-            'marks': 'Znacky'
         }
 
     def clean_username(self):
