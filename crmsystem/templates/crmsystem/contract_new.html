@@ -7,8 +7,9 @@
     {% csrf_token %}
     {% include 'base_sites/bs4_form.html' with form=form_1 show_validation=show_validation %}
 
-    <label>Produkty:</label>
+    <!-- Customer -->
 
+    <label>Produkty:</label>
     {% for contain in form_list %}
     <div class="form-row">
         <div class="form-group col-md-8">

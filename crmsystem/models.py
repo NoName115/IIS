@@ -5,6 +5,7 @@ from decimal import Decimal
 
 
 TITLE_CHOICES = (
+    ('', ''),
     ('Bc.', 'Bc.'),
     ('Ing.', 'Ing.'),
     ('Mgr.', 'Mgr.'),
@@ -22,7 +23,7 @@ class Mark(models.Model):
     name_of_mark = models.CharField(max_length=30)
 
     def __str__(self):
-        return str(self.pk) + self.name_of_mark
+        return self.name_of_mark
 
     class Meta:
         permissions = (
@@ -147,7 +148,6 @@ class Contain(models.Model):
 
     def __str__(self):
         return (
-            str(self.contract.pk) + " " + self.cloth.name +
-            " " + self.cloth.mark.name_of_mark +
-            " - " + str(self.num_of_pieces)
+            self.cloth.name + "(" + self.cloth.mark.name_of_mark +
+            ") - " + str(self.num_of_pieces) + "ks (" + str(self.cloth.cost_of_piece) + "€/ks)"
         )

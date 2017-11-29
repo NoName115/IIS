@@ -20,21 +20,28 @@
     <div class="card">
         <div class="card-header" role="tab" id="headingOne">
         <h5 class="mb-0">
-            <a class="collapsed" data-toggle="collapse" href="#collapse{{ contract.pk }}" aria-expanded="false" aria-controls="collapseOne">
-                {{ contract.employee }} - {{ contract.customer }}
+            <a class="collapsed" data-toggle="collapse" href="#collapse{{ contract.0.pk }}" aria-expanded="false" aria-controls="collapseOne">
+                {{ contract.0.employee }} - {{ contract.0.customer }}
             </a>
             {% if perms.crmsystem.delete_contract %}
-            <a class="btn btn-danger float-sm-right btn-sm" href="{% url 'contract_delete' pk=contract.pk %}" role="button">
+            <a class="btn btn-danger float-sm-right btn-sm" href="{% url 'contract_delete' pk=contract.0.pk %}" role="button">
                 <i class="material-icons" style="font-size:18px; color:white;">delete</i>
             </a>
             {% endif %}
         </h5>
         </div>
-        <div id="collapse{{ contract.pk }}" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+        <div id="collapse{{ contract.0.pk }}" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
         <div class="card-body">
-            Pracovník: {{ contract.employee }} <br>
-            Zákaznik: {{ contract.customer }} <br>
-            Celková cena: {{ contract.total_cost }} <br>
+            Uzavrel: {{ contract.0.employee }} <br>
+            Zákaznik: {{ contract.0.customer }} <br>
+            Adresa dodania: {{ contract.0.city }}, {{ contract.0.street_name }} {{ contract.0.street_number }} <br>
+            Čislo účtu: {{ contract.0.account_iban_number }} <br>
+            <br>
+            Obsah zmluvy: <br>
+            {% for contain in contract.1 %}
+                {{ contain }} <br>
+            {% endfor %}
+            Celková cena: {{ contract.0.total_cost }}€ <br>
         </div>
         </div>
     </div>

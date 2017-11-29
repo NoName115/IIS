@@ -20,7 +20,31 @@ def no_permission(request):
     login_url='/accounts/nopermission/'
 )
 def contract_site(request):
-    contract_list = Contract.objects.all()
+    all_contract = Contract.objects.all()
+
+    # Check if user is Employee or Service
+    is_employee = request.user.groups.filter(
+        name='Employee_group'
+    ).exists()
+    if (is_employee):
+        all_contract = Contract.objects.filter(
+            employee=Employee.objects.filter(
+                user_account=request.user
+            )[0]
+        )
+
+    # Contain contract dict
+    contract_list = []
+    for contract in all_contract:
+        contract_list.append(
+            (
+                contract,
+                Contain.objects.filter(
+                    contract=contract
+                )
+            )
+        )
+
     return render(
         request,
         'crmsystem/contract_site.html',
@@ -136,6 +160,15 @@ def contract_new(request):
         form_list = product_dict['form_list']
     else:
         contract_form = ContractForm()
+        is_employee = request.user.groups.filter(
+            name='Employee_group'
+        ).exists()
+        if (is_employee):
+            contract_form.fields['customer'].queryset = Customer.objects.filter(
+                employee=Employee.objects.filter(
+                    user_account=request.user
+                )[0]
+            )
         form_list = [
             (ContainForm(), 0, 0),
         ]
@@ -176,6 +209,18 @@ def contract_delete(request, pk):
 )
 def meeting_site(request):
     mtg_list = Meeting.objects.all()
+
+    # Check if user is Employee or Service
+    is_employee = request.user.groups.filter(
+        name='Employee_group'
+    ).exists()
+    if (is_employee):
+        mtg_list = Meeting.objects.filter(
+            employee=Employee.objects.filter(
+                user_account=request.user
+            )[0]
+        )
+
     return render(
         request,
         'crmsystem/meeting_site.html',
@@ -202,6 +247,16 @@ def meeting_new(request):
             return redirect('meeting_site')
     else:
         form = MeetingForm()
+        # Check if user is Employee or Service
+        is_employee = request.user.groups.filter(
+            name='Employee_group'
+        ).exists()
+        if (is_employee):
+            form.fields['customer'].queryset = Customer.objects.filter(
+                employee=Employee.objects.filter(
+                    user_account=request.user
+                )[0]
+            )
 
     return render(
         request,
@@ -218,6 +273,18 @@ def meeting_new(request):
 )
 def customer_site(request):
     all_customers = Customer.objects.all()
+
+    # Check if user is Employee or Service
+    is_employee = request.user.groups.filter(
+        name='Employee_group'
+    ).exists()
+    if (is_employee):
+        all_customers = Customer.objects.filter(
+            employee=Employee.objects.filter(
+                user_account=request.user
+            )[0]
+        )
+
     customer_list = [
         (cust, str(count))
         for cust, count in zip(all_customers, range(0, len(all_customers)))
@@ -246,17 +313,16 @@ def customer_edit(request, pk):
         )
         contain_legalperson = True
 
-    state = "Úprava zákaznika"
-    isEmployee = False
+    is_employee = False
     # Check if user is Employee or Service
-    isEmployee = request.user.groups.filter(
+    is_employee = request.user.groups.filter(
         name='Employee_group'
     ).exists()
 
     if (request.method == "POST"):
         form_1 = CustomerForm(request.POST, instance=customer_object)
 
-        if (isEmployee):
+        if (is_employee):
             # Remove employee field assign from form_1
             form_1.fields.pop('employee')
 
@@ -268,14 +334,14 @@ def customer_edit(request, pk):
             customer_object.street_number = form_1.cleaned_data.get('street_number')
             customer_object.street_name = form_1.cleaned_data.get('street_name')
             customer_object.telephone_number = form_1.cleaned_data.get('telephone_number')
-            if (not isEmployee and 'employee' in request.POST):
+            if (not is_employee and 'employee' in request.POST):
                 customer_object.employee = form_1.cleaned_data.get('employee')
 
             customer_object.save()
             return redirect('customer_site')
     else:
         form_1 = CustomerForm(instance=customer_object)
-        if (isEmployee):
+        if (is_employee):
             form_1.fields.pop('employee')
 
     if (contain_legalperson):
@@ -287,7 +353,7 @@ def customer_edit(request, pk):
     # Create dictionary for html
     out_dict = {
         'form_1': form_1,
-        'state': state,
+        'state': "Úprava zákaznika: " + customer_object.pk,
     }
     if (contain_legalperson):
         out_dict.update({
@@ -489,6 +555,16 @@ def employee_edit(request, pk):
 def cloth_site(request):
     marks = Mark.objects.all().order_by('name_of_mark')
     clothes = Cloth.objects.all().order_by('name')
+
+    # Check if user is Employee or Service
+    is_employee = request.user.groups.filter(
+        name='Employee_group'
+    ).exists()
+    if (is_employee):
+        marks = Employee.objects.filter(
+            user_account=request.user
+        )[0].marks.get_queryset()
+
     return render(
         request,
         'crmsystem/cloth_site.html',
@@ -550,7 +626,7 @@ def mark_new(request):
     )
 
 def login_form(request):
-    state = "Please log in."
+    state = "Prosím prihláste sa."
     username = password = ''
 
     if (request.method == "POST"):

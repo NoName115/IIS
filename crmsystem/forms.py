@@ -82,6 +82,13 @@ class ContractForm(forms.ModelForm):
             'account_iban_number',
             'customer',
         ]
+        labels = {
+            'city': 'Mesto',
+            'street_number': 'Číslo ulice',
+            'street_name': 'Ulica',
+            'account_iban_number': 'IBAN číslo účtu',
+            'customer': 'Zákaznik',
+        }
 
 
 class ContainForm(forms.ModelForm):
@@ -102,6 +109,10 @@ class MeetingForm(forms.ModelForm):
         fields = [
             'customer', 'description',
         ]
+        labels = {
+            'customer': 'Zákaznik',
+            'description': 'Popis',
+        }
 
 
 class Legal_personForm(forms.ModelForm):

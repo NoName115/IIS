@@ -3,8 +3,7 @@
 {% block content %}
 
 {% if user.is_authenticated %}
-    <h3>You already logged in!!!</h3>
-    <!--a href="{% url 'registration_form' %}">Register new user</a-->
+    <h3>Už si prihlásený!!!</h3>
 {% else %}
     <h3>{{ state }}</h3>
     <form method="POST">
@@ -20,7 +19,6 @@
             <input type="password" class="form-control" name="password" placeholder="Password">
         </div>
         <button class="btn btn-primary" type="submit">Prihlásiť sa</button>
-        <!--a href="{% url 'registration_form' %}">Register new user</a-->
 
         </div>
     </form>

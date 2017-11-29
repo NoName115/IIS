@@ -4,11 +4,11 @@
 
 {% if user.is_authenticated %}
 <h2>
-    Nemáš oprávnenie vidieť tento obsah
+    Nemáte oprávnenie vidieť tento obsah
 </h2>
 {% else %}
 <h2>
-    Niesi prihlásený aby si mohol vidieť túto stránku
+    Niesťe prihlásený aby ste mohli vidieť túto stránku
 </h2>
 <p>
     <a class="btn btn-primary btn-lg" href="{% url 'login_form' %}" role="button">Prihlásiť sa &raquo;</a>

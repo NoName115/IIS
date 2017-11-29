@@ -32,7 +32,10 @@
         </div>
         <div id="collapse{{ employee.pk }}" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
         <div class="card-body">
-            {{ employee.name }} {{ employee.pk }}
+            Špecializácia na značky:</br></br>
+            {% for mark in employee.marks.all %}
+                {{ mark }}</br>
+            {% endfor %}
         </div>
         </div>
     </div>
