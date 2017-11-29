@@ -23,7 +23,7 @@
             <a class="collapsed" data-toggle="collapse" href="#collapse{{ customer.1 }}" aria-expanded="false" aria-controls="collapseOne">
                 {{ customer.0.email }}
             </a>
-            {% if perms.crmsystem.change_customer or perms.crmsystem.edit_customer_info %}
+            {% if perms.crmsystem.change_customer %}
             <a class="btn btn-primary float-sm-right btn-sm" href="{% url 'customer_edit' pk=customer.0.pk %}" role="button">
                 <i class="material-icons" style="font-size:18px; color:white;">mode_edit</i>
             </a>

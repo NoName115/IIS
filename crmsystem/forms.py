@@ -1,14 +1,28 @@
 from django.contrib.auth import password_validation
 from django.contrib.auth.models import User
 from django import forms
+from django.utils.translation import ugettext_lazy
 
 from .models import *
 
+forms.Field.default_error_messages = {
+    'required': ugettext_lazy('Toto pole sa vyžaduje.'),
+    'invalid': ugettext_lazy('Nesprávny formát dát'),
+}
 
 class EmployeeForm(forms.ModelForm):
     error_messages = {
-        'username_exists': ("Toto užívateľske meno už existuje")
+        'username_exists': ("Toto užívateľske meno už existuje"),
     }
+
+    date_of_birth = forms.DateField(
+        label='Dátum narodenia',
+        input_formats=[
+            '%Y.%m.%d',
+            '%Y-%m-%d',
+        ],
+        help_text='Podporovaný formát: yyyy.mm.dd, yyyy-mm-dd',
+    )
 
     class Meta:
         model = Employee
@@ -21,7 +35,6 @@ class EmployeeForm(forms.ModelForm):
             'name': 'Meno',
             'surname': 'Priezvisko',
             'title': 'Titul',
-            'date_of_birth': 'Datum narodenia',
         }
 
     def clean_username(self):
@@ -132,11 +145,6 @@ class Legal_personForm(forms.ModelForm):
 
 
 class CustomerForm(forms.ModelForm):
-    '''
-    error_messages = {
-        'email_exist': ("This email address already exist")
-    }
-    '''
 
     name = forms.CharField(
         label='Meno',
@@ -155,33 +163,10 @@ class CustomerForm(forms.ModelForm):
         regex=r'^(\+|00)([0-9,\-]+) ([0-9,\-, ]{1,})$',
         help_text='Formát čísla (+/00)country_code number',
     )
-    '''
-    date_of_birth = forms.DateField(
-        label='Dátum narodenia',
-        input_formats=[
-            '%m.%d.%y',
-            '%m.%d.%Y',
-            '%m-%d-%y',
-            '%m-%d-%Y',
-        ],
-        help_text='Podporovaný formár: mm.dd.yy, mm.dd.yyyy, mm-dd-yy, mm-dd-yyyy'
-    )
-    '''
     street_number = forms.IntegerField(
         label='Číslo ulice',
         min_value=0,
     )
-
-    '''
-    def clean_email(self):
-        my_email = self.cleaned_data.get('email')
-        if (Customer.objects.filter(email=my_email)):
-            raise forms.ValidationError(
-                self.error_messages['email_exist'],
-                code='email_exist',
-            )
-        return my_email
-    '''
 
     class Meta:
         model = Customer
@@ -197,7 +182,7 @@ class CustomerForm(forms.ModelForm):
 
 class RegistrationForm(forms.Form):
     error_messages = {
-        'password_mismatch': ("The two password fields didn't match.")
+        'password_mismatch': ("Heslá niesu rovnaké.")
     }
 
     user_name = forms.CharField(
@@ -226,7 +211,7 @@ class RegistrationForm(forms.Form):
         label='Password confirmation',
         widget=forms.PasswordInput(),
         strip=False,
-        help_text=("Enter the same password as before, for verification."),
+        help_text=("Zadajte rovnaké heslo ako v predchádzajucom poli."),
     )
     roles = forms.ChoiceField(
         label='Choose role',

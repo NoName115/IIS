@@ -91,6 +91,7 @@ def contract_new(request):
             )
 
             if (not new_containform.is_valid()):
+                print(new_containform.visible_fields()[1].errors)
                 all_valid = False
 
         return {
@@ -105,9 +106,15 @@ def contract_new(request):
     delimiter = '__'
     show_validation = True
 
-    loggged_employee = Employee.objects.filter(
-        user_account=request.user
-    )[0]
+    is_employee = request.user.groups.filter(
+        name='Employee_group'
+    ).exists()
+    if (is_employee):
+        loggged_employee = Employee.objects.filter(
+            user_account=request.user
+        )[0]
+    else:
+        loggged_employee = Employee.objects.all()[0]
 
     if (request.method == "POST"):
         contract_form = ContractForm(request.POST)
@@ -160,18 +167,14 @@ def contract_new(request):
         form_list = product_dict['form_list']
     else:
         contract_form = ContractForm()
-        is_employee = request.user.groups.filter(
-            name='Employee_group'
-        ).exists()
-        if (is_employee):
-            contract_form.fields['customer'].queryset = Customer.objects.filter(
-                employee=Employee.objects.filter(
-                    user_account=request.user
-                )[0]
-            )
         form_list = [
             (ContainForm(), 0, 0),
         ]
+
+    if (is_employee):
+        contract_form.fields['customer'].queryset = Customer.objects.filter(
+            employee=loggged_employee
+        )
 
     # Clothes from employee
     emp_marks_id = {

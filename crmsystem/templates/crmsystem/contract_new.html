@@ -7,13 +7,11 @@
     {% csrf_token %}
     {% include 'base_sites/bs4_form.html' with form=form_1 show_validation=show_validation %}
 
-    <!-- Customer -->
-
     <label>Produkty:</label>
     {% for contain in form_list %}
     <div class="form-row">
         <div class="form-group col-md-8">
-            <select name="cloth__{{ contain.1 }}" placeholder="Oblečenie" required class="form-control" id="id_cloth__{{ contain.1 }}">
+            <select class="form-control" name="cloth__{{ contain.1 }}" placeholder="Oblečenie" id="id_cloth__{{ contain.1 }}" required>
                 {% for cloth_object in contain.0.cloth.field.choices.queryset %}
                     {% if cloth_object.mark.pk in emp_marks_id %}
                         <option value="{{ cloth_object.pk }}"
@@ -29,7 +27,16 @@
             </select>
         </div>
         <div class="form-group col-md-4">
-            <input type="number" name="num_of_pieces__{{ contain.1 }}" value="{{ contain.0.num_of_pieces.value }}" placeholder="Počet kusov" required class="form-control" min="0" id="id_num_of_pieces__{{ contain.1 }}"/>
+            {% if contain.0.visible_fields.0.errors %}
+            <input class="form-control is-invalid" type="number" name="num_of_pieces__{{ contain.1 }}" value="{{ contain.0.num_of_pieces.value }}" placeholder="Počet kusov" min="0" id="id_num_of_pieces__{{ contain.1 }}" required/>
+                {% for error in contain.0.visible_fields.0.errors %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            {% else %}
+            <input class="form-control" type="number" name="num_of_pieces__{{ contain.1 }}" value="{{ contain.0.num_of_pieces.value }}" placeholder="Počet kusov" min="0" id="id_num_of_pieces__{{ contain.1 }}" required/>
+            {% endif %}
         </div>
         
     </div>
