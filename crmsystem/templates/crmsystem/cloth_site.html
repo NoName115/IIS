@@ -20,7 +20,7 @@
     <div class="card">
         <div class="card-header" role="tab" id="headingOne">
         <h5 class="mb-0">
-            <a class="collapsed" data-toggle="collapse" href="#{{ mark }}" aria-expanded="false" aria-controls="collapseOne">
+            <a class="collapsed" data-toggle="collapse" href="#{{ mark.pk }}" aria-expanded="false" aria-controls="collapseOne">
                 {{ mark.name_of_mark }}
             </a>
             {% if perms.crmsystem.add_cloth %}
@@ -30,21 +30,21 @@
             {% endif %}
         </h5>
         </div>
-        <div id="{{ mark }}" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+        <div id="{{ mark.pk }}" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
         {% if perms.crmsystem.show_cloth %}
         <div class="card-body">
-            <div id="accordion{{ mark }}" role="tablist">
+            <div id="accordion{{ mark.pk }}" role="tablist">
                 {% for cloth in clothes %}
                 {% if cloth.mark == mark %}
                 <div class="card">
                     <div class="card-header" role="tab" id="headingOne">
                     <h5 class="mb-0">
-                        <a class="collapsed" data-toggle="collapse" href="#{{ cloth.pk }}{{ mark }}" aria-expanded="false" aria-controls="collapseOne">
+                        <a class="collapsed" data-toggle="collapse" href="#{{ cloth.pk }}{{ mark.pk }}" aria-expanded="false" aria-controls="collapseOne">
                             {{ cloth.getName }}
                         </a>
                     </h5>
                     </div>
-                    <div id="{{ cloth.pk }}{{ mark }}" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion{{ mark }}">
+                    <div id="{{ cloth.pk }}{{ mark.pk }}" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion{{ mark.pk }}">
                     <div class="card-body">
                         <!--Farba: {{ cloth.color }} <br>-->
                         Veľkosť: {{ cloth.size }} <br>
