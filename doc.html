@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!-- saved from url=(0067)https://www.fit.vutbr.cz/study/courses/IIS/private/projekt/doc.html -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-2"><style id="stndz-style"></style>
-    
+
     <title>Projekt IIS</title>
     <style type="text/css">
     	table { border-collapse: collapse; }
@@ -20,11 +20,11 @@
 	<dt>Autori</dt>
 	<dd>Róbert Kolcún <!-- Nahra?te skute?n?m jm?nem a e-mailem autora a popisem ?innosti -->
 	    <a href="mailto:xkolcu00@stud.fit.vutbr.cz">xkolcu00@stud.fit.vutbr.cz</a> -
-		užívatelske prostredie, správa užívateľov
+		užívatelské prostredie, správa užívateľov
 	</dd>
 	<dd>Ján Demčák <!-- Nahra?te skute?n?m jm?nem a e-mailem autora a popisem ?innosti -->
-	    <a href="mailto:xdemca00@stud.fit.vutbr.cz">xdemca00@stud.fit.vutbr.cz</a> - 
-		modely, databázový systém
+	    <a href="mailto:xdemca01@stud.fit.vutbr.cz">xdemca01@stud.fit.vutbr.cz</a> - 
+		databázové modely a integritné obmedzenia
 	</dd>
 	<dt>URL aplikace</dt>
 	<dd><a href="http://xkolcu00.pythonanywhere.com/">http://xkolcu00.pythonanywhere.com/</a></dd>
@@ -32,27 +32,31 @@
 </dl>
 
 <h2>Uživateľ systému pro testování</h2>
-<p>Uveďte prosím existujúcí zástupce <strong>všech rolí uživatelú</strong>.</p>
 <table>
 <tbody><tr><th>Login</th><th>Heslo</th><th>Role</th></tr>
-<tr><td>xkolcu00</td><td>123admin321</td><td>Administr?tor</td></tr>
+<tr><td>xkolcu00</td><td>123admin321</td><td>Administrátor</td></tr>
 <tr><td>majtel</td><td>123majtel321</td><td>Majteľ firmy</td></tr>
-<tr><td>veduci</td><td>123veduci321</td><td>Vedúci oddelenie styku so zákaznikmi</td></tr>
-<tr><td>Worker_1</td><td>123worker_1321</td><td>Pracovník 1</td></tr>
+<tr><td>veduci</td><td>123veduci321</td><td>Vedúci oddelenia styku so zákaznikmi</td></tr>
+<tr><td>pracovnik1</td><td>123pracovnik1321</td><td>Pracovník 1</td></tr>
+<tr><td>pracovnik2</td><td>123pracovnik2321</td><td>Pracovník 2</td></tr>
+<tr><td>pracovnik3</td><td>123pracovnik3321</td><td>Pracovník 3</td></tr>
+<tr><td>pracovnik4</td><td>123pracovnik4321</td><td>Pracovník 4</td></tr>
+<tr><td>pracovnik5</td><td>123pracovnik5321</td><td>Pracovník 5</td></tr>
 </tbody></table>
 
 <h2>Implementace</h2>
-<p>Stru?n? dokumentace k implementaci, kter? popisuje, kter? PHP skripty implementuj? jednotliv? p??pady pou?it? uveden? v use-case diagramu z IDS. V p??pad?, ?e bylo nutno p?i implementaci u?init zm?ny v n?vrhu, mus? b?t v dokumentaci zd?vodn?ny.</p>
+<p>Prípady v use-case diagrame z predmetu IDS sú všetky implementované v scripte crmsystem/views.py. Pre každý prípad užitia je implementovaná samostatná funkcia. Oproti pôvodnemu diagramu neboli urobené žiadne zmeny, všetky prípady boli implementované.</p>
 
 <h2>Instalace</h2>
 <ul>
-<li>Stru?n? popi?te postup instalace na server</li>
-<li>Softwarov? po?adavky (verze PHP apod.)</li>
-<li>Jak rozbalit, konfigurovat, inicializovat datab?z?, ...</li>
+<li>Najprv je potrebné stiahnuť celý projekt, vytvoriť virtuálne prostredie pre python, následne nainštalovať django a widget-tweaks a urobiť migráciu dát</li>
+<li>Pre inštaláciu na server je potrebné Django-1.11.0, python3.6, pip, django-widget-tweaks</li>
+<li>Rozbaliť archiv, vytvoriť virtuálne prostredie ($python3 -m venv myvenv), zapnúť virtuálne prostredie ($source myvenv/bin/activate), nainštalovať widget-tweaks ($pip install django-widget-tweaks), vytvoriť databázu ($python manage.py migrate) a následne sputiť server ($python manage.py runserver)</li>
+<li>Script pre vytvorenie databázy - initialize_database.sh</li>
 </ul>
 
-<h2>Zn?m? probl?my</h2>
-<p>Zde popi?te, kter? body zad?n? (IDS a IIS) nejsou implementov?ny a z jak?ho d?vodu. Nap?. &#8222;Z ?asov?ch d?vod? nebyla implementov?na spr?va u?ivatel?.&#8221; Pom??ete t?m zrychlit opravov?n?, kdy? neimplementovan? funkce nebudeme muset dlouze hledat.</p>
+<h2>Známe problémy</h2>
+<p>Vrámci zadania z IDS a IIS neboli vynechané žiadne implementáčné body.</p>
 
 
 
