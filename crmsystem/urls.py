@@ -2,8 +2,10 @@ from django.conf.urls import url, include
 from . import views
 from . import groups_manager
 
-
-groups_manager.main()
+try:
+    groups_manager.main()
+except Exception:
+    print("ERROR url, OK if first run")
 
 urlpatterns = [
     # Gome page
