@@ -18,8 +18,8 @@ TITLE_CHOICES = (
 
 
 class Mark(models.Model):
-    designer_name = models.CharField(max_length=30)
-    designer_surname = models.CharField(max_length=30)
+    designer_name = models.CharField(max_length=30, blank=True)
+    designer_surname = models.CharField(max_length=30, blank=True)
     name_of_mark = models.CharField(max_length=30)
 
     def __str__(self):
@@ -33,16 +33,22 @@ class Mark(models.Model):
 
 class Employee(models.Model):
     username = models.CharField(max_length=30)
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30, blank=True)
     surname = models.CharField(max_length=30)
-    title = models.CharField(max_length=10, choices=TITLE_CHOICES)
-    date_of_birth = models.DateField() 
+    title = models.CharField(
+        max_length=10, choices=TITLE_CHOICES,
+        blank=True,
+    )
+    date_of_birth = models.DateField(
+        blank=True, null=True,
+    )
     marks = models.ManyToManyField(Mark)
     user_account = models.ForeignKey('auth.User')
 
     def __str__(self):
         return (
-            self.title + " " + self.name + " " + self.surname
+            self.username + " (" +
+            self.title + " " + self.name + " " + self.surname + ")"
         )
 
     class Meta:
@@ -53,7 +59,7 @@ class Employee(models.Model):
 
 class Legal_person(models.Model):
     ico = models.CharField(primary_key=True, max_length=50)
-    company_name = models.CharField(max_length=50)
+    company_name = models.CharField(max_length=50, blank=True)
 
     def __str__(self):
         return self.ico
@@ -61,12 +67,17 @@ class Legal_person(models.Model):
 
 class Customer(models.Model):
     email = models.EmailField(primary_key=True)
-    name = models.CharField(max_length=30)
-    surname = models.CharField(max_length=30)
-    city = models.CharField(max_length=150)
-    street_number = models.PositiveSmallIntegerField()
-    street_name = models.CharField(max_length=150)
-    telephone_number = models.CharField(max_length=50)
+    name = models.CharField(max_length=150,blank=True)
+    surname = models.CharField(max_length=150, blank=True)
+    city = models.CharField(max_length=150, blank=True)
+    street_number = models.PositiveSmallIntegerField(
+        blank=True, null=True,
+    )
+    street_name = models.CharField(max_length=150, blank=True)
+    telephone_number = models.CharField(
+        max_length=50,
+        blank=True, null=True,
+    )
     employee = models.ForeignKey(
         Employee,
         on_delete=models.CASCADE
@@ -92,8 +103,8 @@ class Customer(models.Model):
 
 class Cloth(models.Model):
     name = models.CharField(max_length=50)
-    description = models.TextField()
-    color = models.IntegerField()
+    description = models.TextField(blank=True)
+    #color = models.IntegerField(blank=True)
     size = models.PositiveSmallIntegerField()
     cost_of_piece = models.DecimalField(decimal_places=2, max_digits=12)
     mark = models.ForeignKey(Mark, on_delete=models.CASCADE)
@@ -102,7 +113,7 @@ class Cloth(models.Model):
         return self.name + " - " + str(self.size)
 
     def __str__(self):
-        return str(self.pk) + " " + self.name
+        return self.name + " (" + str(self.mark.name_of_mark) + ")"
 
     class Meta:
         permissions = (

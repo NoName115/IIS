@@ -68,13 +68,13 @@ def main():
         )
 
     try:
-        test = User.objects.get(username='Service')
+        test = User.objects.get(username='veduci')
     except User.DoesNotExist:
-        customer_service = User.objects.create_user('Service', 'service@vobec.nic', '123service321')
+        customer_service = User.objects.create_user('veduci', 'veduci@vobec.nic', '123veduci321')
         customer_service.groups.add(customerservice_group)
 
     try:
-        test = User.objects.get(username='Owner')
+        test = User.objects.get(username='majtel')
     except User.DoesNotExist:
-        company_owner = User.objects.create_user('Owner', 'owner@vobec.nic', '123owner321')
+        company_owner = User.objects.create_user('majtel', 'majtel@vobec.nic', '123majtel321')
         company_owner.groups.add(companyowner_group)

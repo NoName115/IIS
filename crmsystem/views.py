@@ -110,14 +110,14 @@ def contract_new(request):
         name='Employee_group'
     ).exists()
     if (is_employee):
-        loggged_employee = Employee.objects.filter(
+        logged_employee = Employee.objects.filter(
             user_account=request.user
         )[0]
-    else:
-        loggged_employee = Employee.objects.all()[0]
 
     if (request.method == "POST"):
         contract_form = ContractForm(request.POST)
+        if (is_employee):
+            contract_form.fields.pop('employee')
 
         # Remove last product
         if ('remove_product' in request.POST):
@@ -154,7 +154,9 @@ def contract_new(request):
                     )
                     contain_list.append(contain)
 
-                contract.employee = loggged_employee
+                if (is_employee):
+                    contract.employee = logged_employee
+
                 contract.total_cost = total_price
                 contract.save()
 
@@ -167,23 +169,25 @@ def contract_new(request):
         form_list = product_dict['form_list']
     else:
         contract_form = ContractForm()
+        if (is_employee):
+            contract_form.fields.pop('employee')
+
         form_list = [
             (ContainForm(), 0, 0),
         ]
 
     if (is_employee):
         contract_form.fields['customer'].queryset = Customer.objects.filter(
-            employee=loggged_employee
+            employee=logged_employee
         )
 
-    # Clothes from employee
-    emp_marks_id = {
-        mark['id']
-        for mark in get_object_or_404(
-            Employee,
-            pk=loggged_employee.pk
-        ).marks.values()
-    }
+        # Clothes from employee
+        emp_marks_id = {
+            mark['id']
+            for mark in get_object_or_404(Employee, pk=logged_employee.pk).marks.values()
+        }
+    else:
+        emp_marks_id = { mark.pk for mark in Mark.objects.all() }
 
     return render(
         request,
@@ -239,27 +243,36 @@ def meeting_site(request):
 def meeting_new(request):
     state = "Nové stretnutie"
 
+    # Check if user is Employee or Service
+    is_employee = request.user.groups.filter(
+        name='Employee_group'
+    ).exists()
+
     if (request.method == "POST"):
         form = MeetingForm(request.POST)
+        if (is_employee):
+            form.fields.pop('employee')
+
         if (form.is_valid()):
-            mtg = form.save(commit=False)
-            mtg.employee = Employee.objects.filter(
-                    user_account=request.user
-            )[0]
-            mtg.save()
+            if (is_employee):
+                mtg = form.save(commit=False)
+                mtg.employee = Employee.objects.filter(
+                        user_account=request.user
+                )[0]
+                mtg.save()
+            else:
+                form.save()
             return redirect('meeting_site')
     else:
         form = MeetingForm()
-        # Check if user is Employee or Service
-        is_employee = request.user.groups.filter(
-            name='Employee_group'
-        ).exists()
+
         if (is_employee):
             form.fields['customer'].queryset = Customer.objects.filter(
                 employee=Employee.objects.filter(
                     user_account=request.user
                 )[0]
             )
+            form.fields.pop('employee')
 
     return render(
         request,

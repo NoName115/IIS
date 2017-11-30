@@ -16,6 +16,7 @@ class EmployeeForm(forms.ModelForm):
     }
 
     date_of_birth = forms.DateField(
+        required=False,
         label='Dátum narodenia',
         input_formats=[
             '%Y.%m.%d',
@@ -76,7 +77,7 @@ class ClothForm(forms.ModelForm):
         labels = {
             'name': 'Názov',
             'description': 'Popis',
-            'color': 'Farba' ,
+            #'color': 'Farba' ,
             'size': 'Veľkosť',
         }
 
@@ -93,7 +94,7 @@ class ContractForm(forms.ModelForm):
         fields = [
             'city', 'street_number', 'street_name',
             'account_iban_number',
-            'customer',
+            'customer', 'employee',
         ]
         labels = {
             'city': 'Mesto',
@@ -120,11 +121,12 @@ class MeetingForm(forms.ModelForm):
     class Meta:
         model = Meeting
         fields = [
-            'customer', 'description',
+            'customer', 'description', 'employee',
         ]
         labels = {
             'customer': 'Zákaznik',
             'description': 'Popis',
+            'employee': 'Pracovník',
         }
 
 
@@ -133,6 +135,7 @@ class Legal_personForm(forms.ModelForm):
         label='ICO',
         max_length=8,
         regex=r'(^[0-9]{6,6}$)|(^[0-9]{8,8}$)',
+        help_text='Retazec znakov, dĺžky 6 alebo 8'
     )
     class Meta:
         model = Legal_person
@@ -146,24 +149,18 @@ class Legal_personForm(forms.ModelForm):
 
 class CustomerForm(forms.ModelForm):
 
-    name = forms.CharField(
-        label='Meno',
-        max_length=150
-    )
-    surname = forms.CharField(
-        label='Priezvisko',
-        max_length=150
-    )
     email = forms.EmailField(
         help_text='Must be in format \'name@server.ext\''
     )
     telephone_number = forms.RegexField(
+        required=False,
         label='Telefónne číslo',
         max_length=50,
         regex=r'^(\+|00)([0-9,\-]+) ([0-9,\-, ]{1,})$',
         help_text='Formát čísla (+/00)country_code number',
     )
     street_number = forms.IntegerField(
+        required=False,
         label='Číslo ulice',
         min_value=0,
     )
@@ -175,6 +172,8 @@ class CustomerForm(forms.ModelForm):
             'street_name', 'telephone_number', 'employee'
         ]
         labels = {
+            'name': 'Meno',
+            'surname': 'Priezvisko',
             'city': 'Mesto',
             'street_name': 'Ulica',
         }

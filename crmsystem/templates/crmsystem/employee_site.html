@@ -21,7 +21,7 @@
         <div class="card-header" role="tab" id="headingOne">
         <h5 class="mb-0">
             <a class="collapsed" data-toggle="collapse" href="#collapse{{ employee.pk }}" aria-expanded="false" aria-controls="collapseOne">
-                {{ employee.title }} {{ employee.name }} {{ employee.surname }}
+                {{ employee.username }} ({{ employee.title }} {{ employee.name }} {{ employee.surname }})
             </a>
             {% if perms.crmsystem.change_employee %}
             <a class="btn btn-primary float-sm-right btn-sm" href="{% url 'employee_edit' pk=employee.pk %}" role="button">
